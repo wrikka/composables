@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, vi, afterEach, type Mock } from 'vitest'
 import { useFileDownload } from './useFileDownload'
 
 // Mock fetch and URL.createObjectURL
@@ -14,7 +14,7 @@ describe('useFileDownload', () => {
 
   it('should download a file successfully', async () => {
     const mockBlob = new Blob(['test content'], { type: 'text/plain' })
-    ;(fetch as vi.Mock).mockResolvedValue({
+    ;(fetch as Mock).mockResolvedValue({
       ok: true,
       blob: () => Promise.resolve(mockBlob),
     })
@@ -34,7 +34,7 @@ describe('useFileDownload', () => {
   })
 
   it('should handle fetch error', async () => {
-    ;(fetch as vi.Mock).mockResolvedValue({ ok: false, status: 404 })
+    ;(fetch as Mock).mockResolvedValue({ ok: false, status: 404 })
 
     const { download, isDownloading, error } = useFileDownload()
     await download('http://example.com/not-found.txt')

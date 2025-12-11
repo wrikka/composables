@@ -11,7 +11,7 @@ describe('useTemplateRefs', () => {
         const [, setRef] = useTemplateRefs()
         return () =>
           h('div', [
-            [1, 2, 3].map(i => h('span', { ref: setRef }, i))
+            [1, 2, 3].map(i => h('span', { ref: setRef } as any, i))
           ])
       },
     })

@@ -35,10 +35,22 @@
     // Productivity
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "WebWorker"
+    ],
+    "types": [
+      "vitest/globals",
+      "node",
+      "w3c-generic-sensor"
+    ]
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "src/**/*.test.ts"
   ],
   "exclude": [
     "node_modules",

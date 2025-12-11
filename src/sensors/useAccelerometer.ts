@@ -1,3 +1,4 @@
+/// <reference types="w3c-generic-sensor" />
 import { ref, onMounted, onUnmounted } from 'vue'
 
 interface AccelerometerOptions {
