@@ -35,10 +35,7 @@
     // Productivity
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "preserve",
-    
-    // Types
-    "types": ["node", "vitest/globals"]
+    "jsx": "preserve"
   },
   "include": [
     "src/**/*"
