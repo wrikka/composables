@@ -1,7 +1,7 @@
-import { ref, watch, onUnmounted, type Ref } from 'vue'
+import { ref, watch, type Ref } from 'vue'
+import type { UseStorageReturn } from './types'
 
 export interface UseLocalStorageOptions<T> {
-  defaultValue?: T
   serializer?: {
     read: (value: string) => T
     write: (value: T) => string
@@ -13,72 +13,50 @@ export function useLocalStorage<T>(
   key: string,
   initialValue: T,
   options: UseLocalStorageOptions<T> = {}
-): { value: Ref<T>; remove: () => void; clear: () => void } {
-  const {
-    defaultValue = initialValue,
-    serializer = {
-      read: (value: string) => {
-        try {
-          return JSON.parse(value)
-        } catch {
-          return defaultValue
-        }
-      },
-      write: (value: T) => JSON.stringify(value)
+): UseStorageReturn<T> {
+  const { 
+    serializer = { 
+      read: (v: string) => JSON.parse(v) as T, 
+      write: (v: T) => JSON.stringify(v) 
     },
-    onError = (error) => console.error(error)
+    onError = (e: Error) => console.error(e)
   } = options
 
-  const storedValue = ref<T>(defaultValue)
+  const storedValue = ref(initialValue) as Ref<T>
 
-  const read = (): T => {
+  function read(): void {
     try {
       const rawValue = localStorage.getItem(key)
-      if (rawValue === null) {
-        return defaultValue
+      if (rawValue !== null) {
+        storedValue.value = serializer.read(rawValue)
       }
-      return serializer.read(rawValue)
-    } catch (error) {
-      onError(error as Error)
-      return defaultValue
+    } catch (e) {
+      onError(e as Error)
     }
   }
 
-  const write = (value: T) => {
-    try {
-      localStorage.setItem(key, serializer.write(value))
-    } catch (error) {
-      onError(error as Error)
-    }
-  }
-
-  storedValue.value = read()
+  read()
 
   watch(storedValue, (newValue) => {
-    write(newValue)
+    try {
+      localStorage.setItem(key, serializer.write(newValue))
+    } catch (e) {
+      onError(e as Error)
+    }
   }, { deep: true })
 
   const remove = () => {
     try {
       localStorage.removeItem(key)
-      storedValue.value = defaultValue
-    } catch (error) {
-      onError(error as Error)
+      storedValue.value = initialValue
+    } catch (e) {
+      onError(e as Error)
     }
   }
 
-  const clear = () => {
-    remove()
-  }
-
-  onUnmounted(() => {
-    const finalValue = storedValue.value
-    write(finalValue)
-  })
-
   return {
-    value: storedValue as Ref<T>,
+    value: storedValue,
     remove,
-    clear
+    clear: remove,
   }
 }

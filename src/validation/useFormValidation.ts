@@ -1,9 +1,5 @@
 import { ref, computed, watch, type Ref } from 'vue'
-
-export interface FormValidationRule<T = any> {
-  validate: (value: T) => string | true
-  message?: string
-}
+import type { FormValidationRule } from './types'
 
 export interface ValidationState<T> {
   value: T
@@ -144,32 +140,3 @@ export function useFormValidation<T extends Record<string, any>>(
   }
 }
 
-// Common validation rules
-export const required = (message = 'This field is required'): FormValidationRule => ({
-  validate: (value) => {
-    if (Array.isArray(value)) return value.length > 0 || message
-    if (typeof value === 'string') return value.trim().length > 0 || message
-    return value !== null && value !== undefined && value !== '' || message
-  },
-  message
-})
-
-export const minLength = (min: number, message?: string): FormValidationRule<string> => ({
-  validate: (value) => value.length >= min || (message ?? `Must be at least ${min} characters`),
-  ...(message && { message })
-})
-
-export const maxLength = (max: number, message?: string): FormValidationRule<string> => ({
-  validate: (value) => value.length <= max || (message ?? `Must be no more than ${max} characters`),
-  ...(message && { message })
-})
-
-export const email = (message = 'Must be a valid email'): FormValidationRule<string> => ({
-  validate: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || message,
-  message
-})
-
-export const pattern = (regex: RegExp, message = 'Invalid format'): FormValidationRule<string> => ({
-  validate: (value: string) => regex.test(value) || message,
-  message
-})
