@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { useFormValidation, required, minLength, email } from './useFormValidation'
+import { useFormValidation } from './useFormValidation'
+import { required, minLength, email } from './useValidationRules'
 
 describe('useFormValidation', () => {
   it('should initialize with form values', () => {
