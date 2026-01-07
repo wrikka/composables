@@ -1,24 +1,21 @@
 // Core
-export * from './browser/media/useClipboard'
-export * from './browser/screen/useFullscreen'
 
 // Storage
-export * from './storage/useIndexedDB'
-export * from './storage/useCookie'
+// export * from './browser/storage/useIndexedDB'
+// export * from './browser/storage/useCookie'
 
 // State
-export * from './state'
+export * from './core/state'
 
 // Events
-export * from './events/useKeyboard'
-export * from './events/useOnClickOutside'
-export * from './events/useScroll'
+export * from './browser/events/useKeyboard'
+export * from './browser/events/useOnClickOutside'
+export * from './browser/events/useScroll'
 
 // Validation
-export * from './validation'
+export * from './ui/validation'
 
 // Browser
-export * from './browser/screen/useTitle'
 export * from './browser/screen/usePreferredDark'
 export * from './browser/screen/useWindowSize'
 export * from './browser/location/useGeolocation'
@@ -27,7 +24,6 @@ export * from './browser/device/useBattery'
 export * from './browser/device/useVibration'
 export * from './browser/device/useWakeLock'
 export * from './browser/device/useMediaDevices'
-export * from './browser/permissions/useShare'
 // export * from './browser/useInstallPrompt' // Temporarily disabled due to type issues
 export * from './browser/screen/usePageVisibility'
 export * from './browser/system/useConnection'
@@ -41,18 +37,17 @@ export * from './browser/system/useScreenCapture'
 export { useMarkdownRender, type MarkdownRenderOptions } from './browser/system/useMarkdownRender'
 
 // Utils
-export * from './browser/screen/useWindowSize'
 export * from './ui/utilities/useMediaQuery'
-export * from './time/useDateFormat'
-export * from './data/utils/useColor'
+export * from './utils/time/useDateFormat'
+// export * from './data/utils/useColor'
 export * from './browser/network/useUrl'
-export * from './data/generators/useGenerator'
-export * from './data/utils/useDragAndDrop'
-export * from './time/useTimer'
+// export * from './data/generators/useGenerator'
+// export * from './data/utils/useDragAndDrop'
+export * from './utils/time/useTimer'
 export * from './data/arrays/useArray'
 export * from './data/filters/useFilter'
-export * from './data/utils/useSort'
-export * from './data/utils/useSearch'
+// export * from './data/utils/useSort'
+// export * from './data/utils/useSearch'
 export * from './data/tables/usePagination'
 export * from './data/files/useImageUpload'
 export * from './data/files/useFilePicker'
@@ -61,40 +56,35 @@ export * from './data/files/useFileReader'
 export * from './data/tables/useTable'
 
 // Animation
-export * from './animation/useTransition'
-export * from './animation/useTimeoutFn'
-export * from './animation/useIntervalFn'
+export * from './ui/animation/useTransition'
+export * from './ui/animation/useTimeoutFn'
+export * from './ui/animation/useIntervalFn'
 
 // Network
-export * from './network'
+// export * from './browser/network'
 // Note: useOnline and useNetwork have been moved to browser directory
 // export * from './network/useOnline'
 // export * from './network/useNetwork'
 
 // Form
-export * from './form/useForm'
+export * from './ui/form/useForm'
 
 // Time
-export { useNow } from './time/useNow'
-export { useCountdown as useCountdownTimer, type UseCountdownOptions as UseCountdownTimerOptions } from './time/useCountdown'
+export { useNow } from './utils/time/useNow'
+export { useCountdown as useCountdownTimer, type UseCountdownOptions as UseCountdownTimerOptions } from './utils/time/useCountdown'
 
 // Math
-export * from './math'
+export * from './utils/math'
 
 // Time
-export * from './time/useDebounce'
-export * from './time/useThrottle'
+export * from './utils/time/useDebounce'
+export * from './utils/time/useThrottle'
 
 // UI
 export * from './ui/utilities/useResize'
 export * from './ui/interactions'
 
 // Data
-export * from './data/arrays/useArray'
-export * from './data/utils/useSort'
-export * from './data/filters/useFilter'
-export * from './data/tables/usePagination'
-export * from './data/tables/useTable'
 
 // Navigation
 // TODO: Add navigation utilities when available
@@ -102,27 +92,24 @@ export * from './data/tables/useTable'
 // export * from './navigation/useNavigation'
 
 // Sensors
-export * from './sensors'
+// export * from './browser/sensors'
 
 // String
-export * from './string'
+export * from './utils/string'
 
 // i18n
-export * from './i18n'
+export * from './core/i18n'
 
 // DOM
-export * from './dom'
-
-// Crypto
-export * from './crypto'
+// export * from './browser/dom'
 
 // Component
-export * from './component'
+export * from './ui/component'
 
 // Formatters
-export * from './formatters'
+export * from './utils/formatters'
 
 // New Composables
 export { useMarkdownEditor, type MarkdownEditorOptions, type MarkdownEditorCommands, type MarkdownEditorState } from './ui/components/useMarkdownEditor'
 export { useVideoRecording, type VideoRecordingOptions, type VideoRecordingState, type MediaDevices, type RecordingStats } from './browser/media/useVideoRecording'
-export { useHtmlToMarkdown, type HtmlToMarkdownOptions, type ConversionState } from './data/utils/useHtmlToMarkdown'
+// export { useHtmlToMarkdown, type HtmlToMarkdownOptions, type ConversionState } from './data/utils/useHtmlToMarkdown'

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useScreenOrientation } from './useScreenOrientation'
 
-const { isSupported, angle, type } = useScreenOrientation()
+const { isSupported, angle, orientation } = useScreenOrientation()
 </script>
 
 <template>
@@ -10,7 +10,7 @@ const { isSupported, angle, type } = useScreenOrientation()
     <p v-if="!isSupported">Screen Orientation API not supported</p>
     <template v-else>
       <p>Angle: <span class="font-mono">{{ angle }}</span></p>
-      <p>Type: <span class="font-mono">{{ type }}</span></p>
+      <p>Type: <span class="font-mono">{{ orientation }}</span></p>
     </template>
   </div>
 </template>

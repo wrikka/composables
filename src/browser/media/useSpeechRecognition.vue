@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useSpeechRecognition } from './useSpeechRecognition'
 
-const { isSupported, isListening, result, start, stop } = useSpeechRecognition()
+const { isSupported, isListening, transcript: result, start, stop } = useSpeechRecognition()
 </script>
 
 <template>

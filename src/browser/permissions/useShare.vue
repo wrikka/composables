@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useShare } from './useShare'
 
-const { isSupported, share, shared } = useShare()
+const { isSupported, share } = useShare()
 
-const startShare = () => {
-  share({
+const shared = ref(false)
+
+const startShare = async () => {
+  shared.value = await share({
     title: 'Hello',
     text: 'Check out this awesome composable!',
     url: location.href,

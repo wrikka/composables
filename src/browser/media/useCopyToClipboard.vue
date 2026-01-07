@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useCopyToClipboard } from './useCopyToClipboard'
 
 const source = ref('Hello')
-const { copy, copied, isSupported } = useCopyToClipboard()
+const { copy, isCopied, isSupported } = useCopyToClipboard()
 </script>
 
 <template>
@@ -14,7 +14,7 @@ const { copy, copied, isSupported } = useCopyToClipboard()
       <div class="flex gap-2 items-center">
         <input v-model="source" type="text" class="input" />
         <button class="btn" @click="copy(source)">Copy</button>
-        <p v-if="copied" class="text-green-500">Copied!</p>
+        <p v-if="isCopied" class="text-green-500">Copied!</p>
       </div>
     </template>
   </div>

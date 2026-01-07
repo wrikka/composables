@@ -17,12 +17,14 @@ const mockDeviceMotionEvent = vi.fn().mockImplementation((type, init) => {
 // Mock global constructors
 Object.defineProperty(window, 'DeviceOrientationEvent', {
   value: mockDeviceOrientationEvent,
-  writable: true
+  writable: true,
+  configurable: true
 })
 
 Object.defineProperty(window, 'DeviceMotionEvent', {
   value: mockDeviceMotionEvent,
-  writable: true
+  writable: true,
+  configurable: true
 })
 
 describe('useDeviceOrientation', () => {
@@ -173,11 +175,13 @@ describe('useDeviceOrientation', () => {
     // Restore
     Object.defineProperty(window, 'DeviceOrientationEvent', {
       value: mockDeviceOrientationEvent,
-      writable: true
+      writable: true,
+      configurable: true
     })
     Object.defineProperty(window, 'DeviceMotionEvent', {
       value: mockDeviceMotionEvent,
-      writable: true
+      writable: true,
+      configurable: true
     })
   })
 })

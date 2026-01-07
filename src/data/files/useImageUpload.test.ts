@@ -20,7 +20,11 @@ const mockImage = {
   src: ''
 }
 
-vi.stubGlobal('Image', vi.fn(() => mockImage))
+function MockImage(this: unknown) {
+  return mockImage
+}
+
+vi.stubGlobal('Image', MockImage as any)
 
 // Mock Canvas
 const mockCanvas = {

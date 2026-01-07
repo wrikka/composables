@@ -1,9 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useWebSocket } from './useWebSocket'
 
 const message = ref('')
-const { status, data, send, history } = useWebSocket('wss://echo.websocket.org')
+const { isConnected, isConnecting, messageHistory, send } = useWebSocket({
+  url: 'wss://echo.websocket.org',
+})
+
+const status = computed(() => {
+  if (isConnecting.value) return 'CONNECTING'
+  return isConnected.value ? 'OPEN' : 'CLOSED'
+})
+const history = messageHistory
 </script>
 
 <template>

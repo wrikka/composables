@@ -1,6 +1,6 @@
 import { ref, computed, watch, nextTick } from 'vue'
 import { useMarkdownRender } from '../../browser/system/useMarkdownRender'
-import { useHtmlToMarkdown } from '../../data/utils/useHtmlToMarkdown'
+import { useHtmlToMarkdown } from '../../utils/string/useHtmlToMarkdown'
 
 export interface MarkdownEditorOptions {
   initialContent?: string

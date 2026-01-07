@@ -3,10 +3,10 @@ import { ref } from 'vue'
 import { useFavicon } from './useFavicon'
 
 const newFavicon = ref('https://vueuse.org/favicon.ico')
-const favicon = useFavicon()
+const { favicon, setFavicon } = useFavicon()
 
 // Set initial favicon
-favicon.value = newFavicon.value
+setFavicon(newFavicon.value)
 </script>
 
 <template>
@@ -15,7 +15,7 @@ favicon.value = newFavicon.value
     <p>Current favicon: <code class="font-mono bg-gray-100 p-1 rounded break-all">{{ favicon }}</code></p>
     <div class="flex gap-2">
       <input v-model="newFavicon" type="text" class="input w-full" placeholder="Enter new favicon URL" />
-      <button class="btn" @click="favicon = newFavicon">Update</button>
+      <button class="btn" @click="setFavicon(newFavicon)">Update</button>
     </div>
   </div>
 </template>

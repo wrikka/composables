@@ -1,30 +1,26 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useVideoRecording } from './useVideoRecording'
 
-const videoRef: Ref<HTMLVideoElement | null> = ref(null)
-const { isSupported, isRecording, start, stop, videoUrl, download } = useVideoRecording()
+const isSupported = computed(() => 'MediaRecorder' in window)
+const {
+  isRecording,
+  url,
+  previewRef,
+  startStream,
+  startRecording,
+  stopRecording,
+  downloadRecording,
+} = useVideoRecording()
 
-const startRecording = async () => {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-    if (videoRef.value) {
-      videoRef.value.srcObject = stream
-    }
-    start(stream)
-  } catch (e) {
-    console.error('Failed to get media stream:', e)
-  }
+const start = async () => {
+  await startStream()
+  await startRecording()
 }
 
-const stopRecording = () => {
-  stop()
-  if (videoRef.value && videoRef.value.srcObject) {
-    const tracks = (videoRef.value.srcObject as MediaStream).getTracks()
-    tracks.forEach(track => track.stop())
-    videoRef.value.srcObject = null
-  }
-}
+onMounted(() => {
+  void previewRef.value
+})
 </script>
 
 <template>
@@ -33,18 +29,18 @@ const stopRecording = () => {
     <p v-if="!isSupported">MediaRecorder API not supported</p>
     <template v-else>
       <div class="flex gap-2">
-        <button class="btn" @click="startRecording" :disabled="isRecording">Start Recording</button>
+        <button class="btn" @click="start" :disabled="isRecording">Start Recording</button>
         <button class="btn" @click="stopRecording" :disabled="!isRecording">Stop Recording</button>
-        <button class="btn" @click="download" :disabled="!videoUrl">Download</button>
+        <button class="btn" @click="() => downloadRecording()" :disabled="!url">Download</button>
       </div>
       <p>Status: <span class="font-mono">{{ isRecording ? 'Recording' : 'Idle' }}</span></p>
       <div>
         <p class="font-semibold">Live Preview:</p>
-        <video ref="videoRef" class="w-full max-w-md border rounded bg-gray-100" muted autoplay playsinline></video>
+        <video ref="previewRef" class="w-full max-w-md border rounded bg-gray-100" muted autoplay playsinline></video>
       </div>
-      <div v-if="videoUrl">
+      <div v-if="url">
         <h3 class="font-semibold pt-2">Recorded Preview:</h3>
-        <video :src="videoUrl" class="w-full max-w-md border rounded" controls></video>
+        <video :src="url" class="w-full max-w-md border rounded" controls></video>
       </div>
     </template>
   </div>

@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useSpeechSynthesis } from './useSpeechSynthesis'
 
 const text = ref('Hello, this is a test of the speech synthesis API.')
-const { isSupported, isSpeaking, speak, stop } = useSpeechSynthesis(text)
+const { isSupported, isSpeaking, speak, cancel } = useSpeechSynthesis()
 </script>
 
 <template>
@@ -13,8 +13,8 @@ const { isSupported, isSpeaking, speak, stop } = useSpeechSynthesis(text)
     <template v-else>
       <textarea v-model="text" rows="4" class="input w-full"></textarea>
       <div class="flex gap-2">
-        <button class="btn" @click="speak" :disabled="isSpeaking">Speak</button>
-        <button class="btn" @click="stop" :disabled="!isSpeaking">Stop</button>
+        <button class="btn" @click="speak(text)" :disabled="isSpeaking">Speak</button>
+        <button class="btn" @click="cancel" :disabled="!isSpeaking">Stop</button>
       </div>
       <p>Is Speaking: <span class="font-mono">{{ isSpeaking }}</span></p>
     </template>
