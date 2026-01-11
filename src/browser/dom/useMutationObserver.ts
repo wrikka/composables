@@ -1,40 +1,39 @@
-import { onUnmounted, watch, unref, type Ref } from 'vue';
+import { onUnmounted, type Ref, unref, watch } from "vue";
 
 export type ElementTarget = Ref<Element | null | undefined> | Element | null;
 
 export function useMutationObserver(
-  target: ElementTarget,
-  callback: MutationCallback,
-  options: MutationObserverInit = {}
+	target: ElementTarget,
+	callback: MutationCallback,
+	options: MutationObserverInit = {},
 ) {
-  let observer: MutationObserver | undefined;
+	let observer: MutationObserver | undefined;
 
-  const stop = () => {
-    if (observer) {
-      observer.disconnect();
-      observer = undefined;
-    }
-  };
+	const stop = () => {
+		if (observer) {
+			observer.disconnect();
+			observer = undefined;
+		}
+	};
 
-  const stopWatch = watch(
-    () => unref(target),
-    (el) => {
-      stop();
-      if (el) {
-        observer = new MutationObserver(callback);
-        observer.observe(el, options);
-      }
-    },
-    { immediate: true, flush: 'post' }
-  );
+	const stopWatch = watch(
+		() => unref(target),
+		(el) => {
+			stop();
+			if (el) {
+				observer = new MutationObserver(callback);
+				observer.observe(el, options);
+			}
+		},
+		{ immediate: true, flush: "post" },
+	);
 
-  onUnmounted(() => {
-    stop();
-    stopWatch();
-  });
+	onUnmounted(() => {
+		stop();
+		stopWatch();
+	});
 
-  return {
-    stop,
-  };
+	return {
+		stop,
+	};
 }
-

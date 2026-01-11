@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useSpeechSynthesis } from './useSpeechSynthesis'
+import { ref } from "vue";
+import { useSpeechSynthesis } from "./useSpeechSynthesis";
 
-const text = ref('Hello, this is a test of the speech synthesis API.')
-const { isSupported, isSpeaking, speak, cancel } = useSpeechSynthesis()
+const _text = ref("Hello, this is a test of the speech synthesis API.");
+const { isSupported, isSpeaking, speak, cancel } = useSpeechSynthesis();
 </script>
 
 <template>

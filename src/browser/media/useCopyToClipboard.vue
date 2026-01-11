@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useCopyToClipboard } from './useCopyToClipboard'
+import { ref } from "vue";
+import { useCopyToClipboard } from "./useCopyToClipboard";
 
-const source = ref('Hello')
-const { copy, isCopied, isSupported } = useCopyToClipboard()
+const _source = ref("Hello");
+const { copy, isCopied, isSupported } = useCopyToClipboard();
 </script>
 
 <template>

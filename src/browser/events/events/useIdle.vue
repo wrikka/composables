@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import { useIdle } from '../useIdle'
+import { useIdle } from "../useIdle";
 
-const { idle, lastActive } = useIdle(3000)
+const { idle, lastActive } = useIdle(3000);
 </script>

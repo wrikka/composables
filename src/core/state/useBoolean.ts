@@ -1,55 +1,58 @@
-import { ref, computed, type Ref, type ComputedRef } from 'vue'
+import { type ComputedRef, computed, type Ref, ref } from "vue";
 
 export interface UseBooleanOptions {
-  defaultValue?: boolean
-  onChange?: (value: boolean) => void
+	defaultValue?: boolean;
+	onChange?: (value: boolean) => void;
 }
 
 export interface UseBooleanReturn {
-  value: Ref<boolean>
-  setTrue: () => void
-  setFalse: () => void
-  toggle: () => void
-  set: (value: boolean) => void
-  isTrue: ComputedRef<boolean>
-  isFalse: ComputedRef<boolean>
+	value: Ref<boolean>;
+	setTrue: () => void;
+	setFalse: () => void;
+	toggle: () => void;
+	set: (value: boolean) => void;
+	isTrue: ComputedRef<boolean>;
+	isFalse: ComputedRef<boolean>;
 }
 
-export function useBoolean(defaultValue = false, options: UseBooleanOptions = {}) {
-  const { onChange } = options
-  
-  const value = ref(defaultValue)
+export function useBoolean(
+	defaultValue = false,
+	options: UseBooleanOptions = {},
+) {
+	const { onChange } = options;
 
-  const setTrue = () => {
-    value.value = true
-    onChange?.(true)
-  }
+	const value = ref(defaultValue);
 
-  const setFalse = () => {
-    value.value = false
-    onChange?.(false)
-  }
+	const setTrue = () => {
+		value.value = true;
+		onChange?.(true);
+	};
 
-  const toggle = () => {
-    value.value = !value.value
-    onChange?.(value.value)
-  }
+	const setFalse = () => {
+		value.value = false;
+		onChange?.(false);
+	};
 
-  const set = (newValue: boolean) => {
-    value.value = newValue
-    onChange?.(newValue)
-  }
+	const toggle = () => {
+		value.value = !value.value;
+		onChange?.(value.value);
+	};
 
-  const isTrue = computed(() => value.value === true)
-  const isFalse = computed(() => value.value === false)
+	const set = (newValue: boolean) => {
+		value.value = newValue;
+		onChange?.(newValue);
+	};
 
-  return {
-    value,
-    setTrue,
-    setFalse,
-    toggle,
-    set,
-    isTrue,
-    isFalse
-  }
+	const isTrue = computed(() => value.value === true);
+	const isFalse = computed(() => value.value === false);
+
+	return {
+		value,
+		setTrue,
+		setFalse,
+		toggle,
+		set,
+		isTrue,
+		isFalse,
+	};
 }

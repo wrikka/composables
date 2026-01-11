@@ -1,19 +1,19 @@
-import { computed, Ref } from 'vue'
+import { computed, type Ref } from "vue";
 
 interface TruncateOptions {
-  length: number
-  ellipsis?: string
+	length: number;
+	ellipsis?: string;
 }
 
 export function useTruncate(text: Ref<string>, options: TruncateOptions) {
-  const { length, ellipsis = '...' } = options
+	const { length, ellipsis = "..." } = options;
 
-  const truncatedText = computed(() => {
-    if (text.value.length <= length) {
-      return text.value
-    }
-    return text.value.substring(0, length) + ellipsis
-  })
+	const truncatedText = computed(() => {
+		if (text.value.length <= length) {
+			return text.value;
+		}
+		return text.value.substring(0, length) + ellipsis;
+	});
 
-  return { truncatedText }
+	return { truncatedText };
 }

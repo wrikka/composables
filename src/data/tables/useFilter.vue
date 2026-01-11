@@ -1,38 +1,38 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useFilter } from './useFilter'
+import { ref } from "vue";
+import { useFilter } from "./useFilter";
 
 const data = ref([
-  { id: 1, name: 'Alice', category: 'A', active: true },
-  { id: 2, name: 'Bob', category: 'B', active: false },
-  { id: 3, name: 'Charlie', category: 'A', active: true },
-  { id: 4, name: 'David', category: 'C', active: false },
-  { id: 5, name: 'Eve', category: 'B', active: true },
-])
+	{ id: 1, name: "Alice", category: "A", active: true },
+	{ id: 2, name: "Bob", category: "B", active: false },
+	{ id: 3, name: "Charlie", category: "A", active: true },
+	{ id: 4, name: "David", category: "C", active: false },
+	{ id: 5, name: "Eve", category: "B", active: true },
+]);
 
-const { filteredData, addFilter, clearFilters } = useFilter(data)
+const { filteredData, addFilter, clearFilters } = useFilter(data);
 
-const categoryFilter = ref('')
-const activeFilter = ref<boolean | null>(null)
+const categoryFilter = ref("");
+const activeFilter = ref<boolean | null>(null);
 
 const filterByCategory = (item: { category: string }) => {
-  if (!categoryFilter.value) return true
-  return item.category === categoryFilter.value
-}
+	if (!categoryFilter.value) return true;
+	return item.category === categoryFilter.value;
+};
 
 const filterByActive = (item: { active: boolean }) => {
-  if (activeFilter.value === null) return true
-  return item.active === activeFilter.value
-}
+	if (activeFilter.value === null) return true;
+	return item.active === activeFilter.value;
+};
 
 function applyFilters() {
-  clearFilters()
-  addFilter(filterByCategory)
-  addFilter(filterByActive)
+	clearFilters();
+	addFilter(filterByCategory);
+	addFilter(filterByActive);
 }
 
 // Apply initial filters
-applyFilters()
+applyFilters();
 </script>
 
 <template>

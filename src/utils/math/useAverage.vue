@@ -9,17 +9,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useAverage } from './useAverage'
+import { ref } from "vue";
+import { useAverage } from "./useAverage";
 
-const numbers = ref([1, 2, 3, 4, 5])
-const newNumber = ref(6)
-const { average } = useAverage(numbers)
+const numbers = ref([1, 2, 3, 4, 5]);
+const newNumber = ref(6);
+const { average } = useAverage(numbers);
 
-const addNumber = () => {
-  if (typeof newNumber.value === 'number') {
-    numbers.value.push(newNumber.value)
-    newNumber.value = 0
-  }
-}
+const _addNumber = () => {
+	if (typeof newNumber.value === "number") {
+		numbers.value.push(newNumber.value);
+		newNumber.value = 0;
+	}
+};
 </script>

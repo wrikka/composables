@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useSvg } from './useSvg'
+import { ref } from "vue";
+import { useSvg } from "./useSvg";
 
-const path = ref<SVGPathElement | null>(null)
-const { play, reset } = useSvg(path, { duration: 2000 })
+const path = ref<SVGPathElement | null>(null);
+const { play, reset } = useSvg(path, { duration: 2000 });
 </script>
 
 <template>

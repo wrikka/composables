@@ -19,13 +19,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useArray } from '../useArray'
+import { ref } from "vue";
+import { useArray } from "../useArray";
 
-const { array, push, pop, shift, unshift, clear, reverse, insertAt, removeAt } = useArray([1, 2, 3])
-const itemToAdd = ref(99)
-const indexToInsert = ref(1)
-const indexToRemove = ref(1)
+const { array, push, pop, shift, unshift, clear, reverse, insertAt, removeAt } =
+	useArray([1, 2, 3]);
+const _itemToAdd = ref(99);
+const _indexToInsert = ref(1);
+const _indexToRemove = ref(1);
 </script>
 
 <style scoped>

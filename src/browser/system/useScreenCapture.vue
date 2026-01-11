@@ -15,25 +15,25 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
-import { useScreenCapture } from '../useScreenCapture'
+import { ref, watch } from "vue";
+import { useScreenCapture } from "../useScreenCapture";
 
-const videoRef = ref(null)
-const { isSupported, isCapturing, stream, start, stop } = useScreenCapture()
+const videoRef = ref(null);
+const { isSupported, isCapturing, stream, start, stop } = useScreenCapture();
 
-const startCapture = async () => {
-  await start()
-}
+const _startCapture = async () => {
+	await start();
+};
 
-const stopCapture = () => {
-  stop()
-}
+const _stopCapture = () => {
+	stop();
+};
 
 watch(stream, (newStream) => {
-  if (newStream && videoRef.value) {
-    videoRef.value.srcObject = newStream
-  } else if (videoRef.value) {
-    videoRef.value.srcObject = null
-  }
-})
+	if (newStream && videoRef.value) {
+		videoRef.value.srcObject = newStream;
+	} else if (videoRef.value) {
+		videoRef.value.srcObject = null;
+	}
+});
 </script>

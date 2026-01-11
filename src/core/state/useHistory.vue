@@ -12,11 +12,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useHistory } from './useHistory'
+import { ref } from "vue";
+import { useHistory } from "./useHistory";
 
-const value = ref('')
-const { history, canUndo, canRedo, undo, redo, clear } = useHistory(value)
+const value = ref("");
+const { history, canUndo, canRedo, undo, redo, clear } = useHistory(value);
 </script>
 
 <style scoped>

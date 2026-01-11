@@ -1,38 +1,38 @@
-import { ref } from 'vue'
-import { describe, it, expect, vi, afterEach } from 'vitest'
-import { useDebounce } from './useDebounce'
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { ref } from "vue";
+import { useDebounce } from "./useDebounce";
 
-vi.useFakeTimers()
+vi.useFakeTimers();
 
-describe('useDebounce', () => {
-  afterEach(() => {
-    vi.clearAllTimers()
-  })
+describe("useDebounce", () => {
+	afterEach(() => {
+		vi.clearAllTimers();
+	});
 
-  it('should debounce the value', async () => {
-    const value = ref(0)
-    const debouncedValue = useDebounce(value, 200)
+	it("should debounce the value", async () => {
+		const value = ref(0);
+		const debouncedValue = useDebounce(value, 200);
 
-    expect(debouncedValue.value).toBe(0)
+		expect(debouncedValue.value).toBe(0);
 
-    value.value = 1
-    expect(debouncedValue.value).toBe(0)
+		value.value = 1;
+		expect(debouncedValue.value).toBe(0);
 
-    vi.advanceTimersByTime(100)
-    expect(debouncedValue.value).toBe(0)
+		vi.advanceTimersByTime(100);
+		expect(debouncedValue.value).toBe(0);
 
-    vi.advanceTimersByTime(100)
-    expect(debouncedValue.value).toBe(1)
-  })
+		vi.advanceTimersByTime(100);
+		expect(debouncedValue.value).toBe(1);
+	});
 
-  it('should update immediately after the delay', () => {
-    const value = ref('test')
-    const debouncedValue = useDebounce(value, 500)
+	it("should update immediately after the delay", () => {
+		const value = ref("test");
+		const debouncedValue = useDebounce(value, 500);
 
-    value.value = 'updated'
-    expect(debouncedValue.value).toBe('test')
+		value.value = "updated";
+		expect(debouncedValue.value).toBe("test");
 
-    vi.advanceTimersByTime(500)
-    expect(debouncedValue.value).toBe('updated')
-  })
-})
+		vi.advanceTimersByTime(500);
+		expect(debouncedValue.value).toBe("updated");
+	});
+});

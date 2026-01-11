@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { useUrl } from './useUrl'
+import { useUrl } from "./useUrl";
 
-const { url, protocol, hostname, pathname, search, hash, params, setUrl } = useUrl()
+const { url, protocol, hostname, pathname, search, hash, params, setUrl } =
+	useUrl();
 
 // Set an initial URL for the demo since the default is window.location.href
-setUrl('https://wrikka.com/path?query=string#hash')
+setUrl("https://wrikka.com/path?query=string#hash");
 </script>
 
 <template>

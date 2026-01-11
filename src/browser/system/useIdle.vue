@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useIdle } from './useIdle'
+import { useIdle } from "./useIdle";
 
-const { isIdle, lastActive } = useIdle({ timeout: 3000 })
+const { isIdle, lastActive } = useIdle({ timeout: 3000 });
 </script>
 
 <template>

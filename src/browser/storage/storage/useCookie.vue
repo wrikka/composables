@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import { useCookie } from './useCookie'
+import { useCookie } from "./useCookie";
 
-const cookieValue = useCookie('my-cookie', { defaultValue: 'Hello, Cookie!' })
+const _cookieValue = useCookie("my-cookie", { defaultValue: "Hello, Cookie!" });
 </script>

@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useFlip } from './useFlip'
+import { ref } from "vue";
+import { useFlip } from "./useFlip";
 
-const items = ref([1, 2, 3, 4, 5])
-const itemRefs = ref<HTMLElement[]>([])
+const items = ref([1, 2, 3, 4, 5]);
+const itemRefs = ref<HTMLElement[]>([]);
 
-const { play } = useFlip(itemRefs)
+const { play } = useFlip(itemRefs);
 
-const shuffle = () => {
-  play()
-  items.value.sort(() => Math.random() - 0.5)
-}
+const _shuffle = () => {
+	play();
+	items.value.sort(() => Math.random() - 0.5);
+};
 </script>
 
 <template>

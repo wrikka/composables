@@ -13,41 +13,41 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useMutationObserver } from '../useMutationObserver'
+import { ref } from "vue";
+import { useMutationObserver } from "../useMutationObserver";
 
-const targetElement = ref(null)
-const attrValue = ref('initial')
-const mutationRecords = ref([])
+const targetElement = ref(null);
+const attrValue = ref("initial");
+const mutationRecords = ref([]);
 
 const callback = (mutations) => {
-  mutationRecords.value = mutations.map(m => ({
-    type: m.type,
-    attributeName: m.attributeName,
-    addedNodes: m.addedNodes.length,
-    removedNodes: m.removedNodes.length,
-  }))
-}
+	mutationRecords.value = mutations.map((m) => ({
+		type: m.type,
+		attributeName: m.attributeName,
+		addedNodes: m.addedNodes.length,
+		removedNodes: m.removedNodes.length,
+	}));
+};
 
 useMutationObserver(targetElement, callback, {
-  attributes: true,
-  childList: true,
-})
+	attributes: true,
+	childList: true,
+});
 
-const changeAttribute = () => {
-  attrValue.value = `changed-${Math.random()}`
-  if (targetElement.value) {
-    targetElement.value.setAttribute('data-random', attrValue.value)
-  }
-}
+const _changeAttribute = () => {
+	attrValue.value = `changed-${Math.random()}`;
+	if (targetElement.value) {
+		targetElement.value.setAttribute("data-random", attrValue.value);
+	}
+};
 
-const addChild = () => {
-  if (targetElement.value) {
-    const newChild = document.createElement('p')
-    newChild.textContent = 'New Child'
-    targetElement.value.appendChild(newChild)
-  }
-}
+const _addChild = () => {
+	if (targetElement.value) {
+		const newChild = document.createElement("p");
+		newChild.textContent = "New Child";
+		targetElement.value.appendChild(newChild);
+	}
+};
 </script>
 
 <style scoped>

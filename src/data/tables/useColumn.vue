@@ -1,25 +1,24 @@
 <script setup lang="ts">
-import { useColumn, type Column } from './useColumn'
+import { type Column, useColumn } from "./useColumn";
 
 interface Data {
-  id: number
-  name: string
-  email: string
+	id: number;
+	name: string;
+	email: string;
 }
 
 const initialColumns: Column<Data>[] = [
-  { key: 'id', label: 'ID', width: 50 },
-  { key: 'name', label: 'Name', isResizable: true, width: 150 },
-  { key: 'email', label: 'Email', isVisible: false, width: 200 },
-]
+	{ key: "id", label: "ID", width: 50 },
+	{ key: "name", label: "Name", isResizable: true, width: 150 },
+	{ key: "email", label: "Email", isVisible: false, width: 200 },
+];
 
-const columns = initialColumns.map(useColumn)
+const _columns = initialColumns.map(useColumn);
 
-const data: Data[] = [
-  { id: 1, name: 'Alice', email: 'alice@example.com' },
-  { id: 2, name: 'Bob', email: 'bob@example.com' },
-]
-
+const _data: Data[] = [
+	{ id: 1, name: "Alice", email: "alice@example.com" },
+	{ id: 2, name: "Bob", email: "bob@example.com" },
+];
 </script>
 
 <template>

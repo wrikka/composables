@@ -1,204 +1,231 @@
-import { ref, computed } from 'vue'
+import { computed, ref } from "vue";
 
 export interface UseSearchOptions<T> {
-  keys?: (keyof T)[]
-  caseSensitive?: boolean
-  fuzzy?: boolean
-  threshold?: number
+	keys?: (keyof T)[];
+	caseSensitive?: boolean;
+	fuzzy?: boolean;
+	threshold?: number;
 }
 
 export function useSearch<T>(items: T[], options: UseSearchOptions<T> = {}) {
-  const { 
-    keys = [], 
-    caseSensitive = false, 
-    fuzzy = false, 
-    threshold = 0.6 
-  } = options
+	const {
+		keys = [],
+		caseSensitive = false,
+		fuzzy = false,
+		threshold = 0.6,
+	} = options;
 
-  const query = ref('')
-  const searchKeys = ref(keys)
+	const query = ref("");
+	const searchKeys = ref(keys);
 
-  const normalizeString = (str: string): string => {
-    return caseSensitive ? str : str.toLowerCase()
-  }
+	const normalizeString = (str: string): string => {
+		return caseSensitive ? str : str.toLowerCase();
+	};
 
-  const fuzzyMatch = (text: string, pattern: string, threshold: number): boolean => {
-    const textNorm = normalizeString(text)
-    const patternNorm = normalizeString(pattern)
-    
-    if (textNorm.includes(patternNorm)) return true
-    
-    // Simple fuzzy matching
-    let patternIndex = 0
-    let score = 0
-    
-    for (let i = 0; i < textNorm.length && patternIndex < patternNorm.length; i++) {
-      if (textNorm[i] === patternNorm[patternIndex]) {
-        score++
-        patternIndex++
-      }
-    }
-    
-    const matchScore = score / patternNorm.length
-    return matchScore >= threshold
-  }
+	const fuzzyMatch = (
+		text: string,
+		pattern: string,
+		threshold: number,
+	): boolean => {
+		const textNorm = normalizeString(text);
+		const patternNorm = normalizeString(pattern);
 
-  const exactMatch = (text: string, pattern: string): boolean => {
-    return normalizeString(text).includes(normalizeString(pattern))
-  }
+		if (textNorm.includes(patternNorm)) return true;
 
-  const searchInItem = (item: T, searchQuery: string): boolean => {
-    if (!searchQuery.trim()) return true
+		// Simple fuzzy matching
+		let patternIndex = 0;
+		let score = 0;
 
-    const keysToSearch = searchKeys.value.length > 0 ? searchKeys.value : (Object.keys(item as any) as (keyof T)[])
+		for (
+			let i = 0;
+			i < textNorm.length && patternIndex < patternNorm.length;
+			i++
+		) {
+			if (textNorm[i] === patternNorm[patternIndex]) {
+				score++;
+				patternIndex++;
+			}
+		}
 
-    return keysToSearch.some(key => {
-      const value = item[key as keyof T]
-      if (value == null) return false
+		const matchScore = score / patternNorm.length;
+		return matchScore >= threshold;
+	};
 
-      const stringValue = String(value)
-      return fuzzy 
-        ? fuzzyMatch(stringValue, searchQuery, threshold)
-        : exactMatch(stringValue, searchQuery)
-    })
-  }
+	const exactMatch = (text: string, pattern: string): boolean => {
+		return normalizeString(text).includes(normalizeString(pattern));
+	};
 
-  const filteredItems = computed(() => {
-    if (!query.value.trim()) return items
+	const searchInItem = (item: T, searchQuery: string): boolean => {
+		if (!searchQuery.trim()) return true;
 
-    return items.filter(item => searchInItem(item, query.value))
-  })
+		const keysToSearch =
+			searchKeys.value.length > 0
+				? searchKeys.value
+				: (Object.keys(item as any) as (keyof T)[]);
 
-  const search = (searchQuery: string) => {
-    query.value = searchQuery
-  }
+		return keysToSearch.some((key) => {
+			const value = item[key as keyof T];
+			if (value == null) return false;
 
-  const clear = () => {
-    query.value = ''
-  }
+			const stringValue = String(value);
+			return fuzzy
+				? fuzzyMatch(stringValue, searchQuery, threshold)
+				: exactMatch(stringValue, searchQuery);
+		});
+	};
 
-  const setKeys = (keys: (keyof T)[]) => {
-    searchKeys.value = keys
-  }
+	const filteredItems = computed(() => {
+		if (!query.value.trim()) return items;
 
-  const addKey = (key: keyof T) => {
-    if (!searchKeys.value.includes(key as any)) {
-      searchKeys.value.push(key as any)
-    }
-  }
+		return items.filter((item) => searchInItem(item, query.value));
+	});
 
-  const removeKey = (key: keyof T) => {
-    searchKeys.value = searchKeys.value.filter(k => k !== key)
-  }
+	const search = (searchQuery: string) => {
+		query.value = searchQuery;
+	};
 
-  const hasResults = computed(() => filteredItems.value.length > 0)
-  const resultCount = computed(() => filteredItems.value.length)
-  const isEmpty = computed(() => !query.value.trim())
+	const clear = () => {
+		query.value = "";
+	};
 
-  return {
-    query,
-    searchKeys,
-    filteredItems,
-    hasResults,
-    resultCount,
-    isEmpty,
-    search,
-    clear,
-    setKeys,
-    addKey,
-    removeKey
-  }
+	const setKeys = (keys: (keyof T)[]) => {
+		searchKeys.value = keys;
+	};
+
+	const addKey = (key: keyof T) => {
+		if (!searchKeys.value.includes(key as any)) {
+			searchKeys.value.push(key as any);
+		}
+	};
+
+	const removeKey = (key: keyof T) => {
+		searchKeys.value = searchKeys.value.filter((k) => k !== key);
+	};
+
+	const hasResults = computed(() => filteredItems.value.length > 0);
+	const resultCount = computed(() => filteredItems.value.length);
+	const isEmpty = computed(() => !query.value.trim());
+
+	return {
+		query,
+		searchKeys,
+		filteredItems,
+		hasResults,
+		resultCount,
+		isEmpty,
+		search,
+		clear,
+		setKeys,
+		addKey,
+		removeKey,
+	};
 }
 
 // Advanced search with multiple filters
 export interface SearchFilter<T> {
-  key: keyof T
-  operator: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'gt' | 'gte' | 'lt' | 'lte'
-  value: any
+	key: keyof T;
+	operator:
+		| "equals"
+		| "contains"
+		| "startsWith"
+		| "endsWith"
+		| "gt"
+		| "gte"
+		| "lt"
+		| "lte";
+	value: any;
 }
 
 export function useAdvancedSearch<T>(items: T[]) {
-  const query = ref('')
-  const filters = ref<SearchFilter<T>[]>([])
+	const query = ref("");
+	const filters = ref<SearchFilter<T>[]>([]);
 
-  const applyFilter = (item: T, filter: SearchFilter<T>): boolean => {
-    const { key, operator, value } = filter
-    const itemValue = item[key]
+	const applyFilter = (item: T, filter: SearchFilter<T>): boolean => {
+		const { key, operator, value } = filter;
+		const itemValue = item[key];
 
-    switch (operator) {
-      case 'equals':
-        return itemValue === value
-      case 'contains':
-        return String(itemValue).toLowerCase().includes(String(value).toLowerCase())
-      case 'startsWith':
-        return String(itemValue).toLowerCase().startsWith(String(value).toLowerCase())
-      case 'endsWith':
-        return String(itemValue).toLowerCase().endsWith(String(value).toLowerCase())
-      case 'gt':
-        return Number(itemValue) > Number(value)
-      case 'gte':
-        return Number(itemValue) >= Number(value)
-      case 'lt':
-        return Number(itemValue) < Number(value)
-      case 'lte':
-        return Number(itemValue) <= Number(value)
-      default:
-        return true
-    }
-  }
+		switch (operator) {
+			case "equals":
+				return itemValue === value;
+			case "contains":
+				return String(itemValue)
+					.toLowerCase()
+					.includes(String(value).toLowerCase());
+			case "startsWith":
+				return String(itemValue)
+					.toLowerCase()
+					.startsWith(String(value).toLowerCase());
+			case "endsWith":
+				return String(itemValue)
+					.toLowerCase()
+					.endsWith(String(value).toLowerCase());
+			case "gt":
+				return Number(itemValue) > Number(value);
+			case "gte":
+				return Number(itemValue) >= Number(value);
+			case "lt":
+				return Number(itemValue) < Number(value);
+			case "lte":
+				return Number(itemValue) <= Number(value);
+			default:
+				return true;
+		}
+	};
 
-  const filteredItems = computed(() => {
-    let result = items
+	const filteredItems = computed(() => {
+		let result = items;
 
-    // Apply text search
-    if (query.value.trim()) {
-      result = result.filter(item => {
-        return Object.values(item as any).some(value => 
-          String(value).toLowerCase().includes(query.value.toLowerCase())
-        )
-      })
-    }
+		// Apply text search
+		if (query.value.trim()) {
+			result = result.filter((item) => {
+				return Object.values(item as any).some((value) =>
+					String(value).toLowerCase().includes(query.value.toLowerCase()),
+				);
+			});
+		}
 
-    // Apply filters
-    return result.filter(item => 
-      filters.value.every(filter => applyFilter(item, filter as SearchFilter<T>))
-    )
-  })
+		// Apply filters
+		return result.filter((item) =>
+			filters.value.every((filter) =>
+				applyFilter(item, filter as SearchFilter<T>),
+			),
+		);
+	});
 
-  const addFilter = (filter: SearchFilter<T>) => {
-    const existingIndex = filters.value.findIndex(f => f.key === filter.key)
-    if (existingIndex >= 0) {
-      filters.value[existingIndex] = filter as any
-    } else {
-      filters.value.push(filter as any)
-    }
-  }
+	const addFilter = (filter: SearchFilter<T>) => {
+		const existingIndex = filters.value.findIndex((f) => f.key === filter.key);
+		if (existingIndex >= 0) {
+			filters.value[existingIndex] = filter as any;
+		} else {
+			filters.value.push(filter as any);
+		}
+	};
 
-  const removeFilter = (key: keyof T) => {
-    filters.value = filters.value.filter(f => f.key !== key)
-  }
+	const removeFilter = (key: keyof T) => {
+		filters.value = filters.value.filter((f) => f.key !== key);
+	};
 
-  const clearFilters = () => {
-    filters.value = []
-  }
+	const clearFilters = () => {
+		filters.value = [];
+	};
 
-  const search = (searchQuery: string) => {
-    query.value = searchQuery
-  }
+	const search = (searchQuery: string) => {
+		query.value = searchQuery;
+	};
 
-  const clear = () => {
-    query.value = ''
-    filters.value = []
-  }
+	const clear = () => {
+		query.value = "";
+		filters.value = [];
+	};
 
-  return {
-    query,
-    filters,
-    filteredItems,
-    addFilter,
-    removeFilter,
-    clearFilters,
-    search,
-    clear
-  }
+	return {
+		query,
+		filters,
+		filteredItems,
+		addFilter,
+		removeFilter,
+		clearFilters,
+		search,
+		clear,
+	};
 }

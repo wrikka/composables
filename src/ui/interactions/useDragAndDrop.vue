@@ -16,17 +16,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useDragAndDrop } from '../useDragAndDrop'
+import { ref } from "vue";
+import { useDragAndDrop } from "../useDragAndDrop";
 
-const dropZoneRef = ref(null)
-const files = ref(null)
+const dropZoneRef = ref(null);
+const files = ref(null);
 
 const onDrop = (droppedFiles) => {
-  files.value = droppedFiles
-}
+	files.value = droppedFiles;
+};
 
-const { isOverDropZone } = useDragAndDrop(dropZoneRef, { onDrop })
+const { isOverDropZone } = useDragAndDrop(dropZoneRef, { onDrop });
 </script>
 
 <style scoped>

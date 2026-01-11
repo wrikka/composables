@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { useConnection } from './useConnection'
+import { useConnection } from "./useConnection";
 
-const { 
-  isSupported, 
-  connection,
-  online,
-  getConnectionQuality
-} = useConnection()
+const { isSupported, connection, online, getConnectionQuality } =
+	useConnection();
 </script>
 
 <template>

@@ -14,30 +14,34 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useFileReader } from '../useFileReader'
+import { ref } from "vue";
+import { useFileReader } from "../useFileReader";
 
-const { result, isLoading, error, read } = useFileReader()
-const textResult = ref('')
-const dataUrlResult = ref('')
+const { result, isLoading, error, read } = useFileReader();
+const textResult = ref("");
+const dataUrlResult = ref("");
 
-const onFileChange = (event) => {
-  const file = event.target.files[0]
-  if (!file) return
+const _onFileChange = (event) => {
+	const file = event.target.files[0];
+	if (!file) return;
 
-  // Read as text
-  read(file, 'text')
-  // Since read is async, we can't get the result immediately.
-  // A real app would use a watcher or computed property.
-  // For this demo, we'll read it twice.
-  const readerText = new FileReader()
-  readerText.onload = (e) => { textResult.value = e.target.result }
-  readerText.readAsText(file)
+	// Read as text
+	read(file, "text");
+	// Since read is async, we can't get the result immediately.
+	// A real app would use a watcher or computed property.
+	// For this demo, we'll read it twice.
+	const readerText = new FileReader();
+	readerText.onload = (e) => {
+		textResult.value = e.target.result;
+	};
+	readerText.readAsText(file);
 
-  const readerDataUrl = new FileReader()
-  readerDataUrl.onload = (e) => { dataUrlResult.value = e.target.result }
-  readerDataUrl.readAsDataURL(file)
-}
+	const readerDataUrl = new FileReader();
+	readerDataUrl.onload = (e) => {
+		dataUrlResult.value = e.target.result;
+	};
+	readerDataUrl.readAsDataURL(file);
+};
 </script>
 
 <style scoped>

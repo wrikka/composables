@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
-import { useVideoRecording } from './useVideoRecording'
+import { computed, onMounted } from "vue";
+import { useVideoRecording } from "./useVideoRecording";
 
-const isSupported = computed(() => 'MediaRecorder' in window)
+const _isSupported = computed(() => "MediaRecorder" in window);
 const {
-  isRecording,
-  url,
-  previewRef,
-  startStream,
-  startRecording,
-  stopRecording,
-  downloadRecording,
-} = useVideoRecording()
+	isRecording,
+	url,
+	previewRef,
+	startStream,
+	startRecording,
+	stopRecording,
+	downloadRecording,
+} = useVideoRecording();
 
-const start = async () => {
-  await startStream()
-  await startRecording()
-}
+const _start = async () => {
+	await startStream();
+	await startRecording();
+};
 
 onMounted(() => {
-  void previewRef.value
-})
+	void previewRef.value;
+});
 </script>
 
 <template>

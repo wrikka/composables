@@ -1,60 +1,60 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from "vue";
 
 export interface UseNowOptions {
-  interval?: number
-  immediate?: boolean
+	interval?: number;
+	immediate?: boolean;
 }
 
 export function useNow(options: UseNowOptions = {}) {
-  const { interval = 1000, immediate = true } = options
-  
-  const now = ref(new Date())
-  const isActive = ref(false)
-  let intervalId: NodeJS.Timeout | null = null
+	const { interval = 1000, immediate = true } = options;
 
-  const start = () => {
-    if (intervalId) return
-    
-    isActive.value = true
-    now.value = new Date()
-    
-    intervalId = setInterval(() => {
-      now.value = new Date()
-    }, interval)
-  }
+	const now = ref(new Date());
+	const isActive = ref(false);
+	let intervalId: NodeJS.Timeout | null = null;
 
-  const stop = () => {
-    if (intervalId) {
-      clearInterval(intervalId)
-      intervalId = null
-    }
-    isActive.value = false
-  }
+	const start = () => {
+		if (intervalId) return;
 
-  const pause = () => {
-    stop()
-  }
+		isActive.value = true;
+		now.value = new Date();
 
-  const resume = () => {
-    start()
-  }
+		intervalId = setInterval(() => {
+			now.value = new Date();
+		}, interval);
+	};
 
-  onMounted(() => {
-    if (immediate) {
-      start()
-    }
-  })
+	const stop = () => {
+		if (intervalId) {
+			clearInterval(intervalId);
+			intervalId = null;
+		}
+		isActive.value = false;
+	};
 
-  onUnmounted(() => {
-    stop()
-  })
+	const pause = () => {
+		stop();
+	};
 
-  return {
-    now,
-    isActive,
-    start,
-    stop,
-    pause,
-    resume
-  }
+	const resume = () => {
+		start();
+	};
+
+	onMounted(() => {
+		if (immediate) {
+			start();
+		}
+	});
+
+	onUnmounted(() => {
+		stop();
+	});
+
+	return {
+		now,
+		isActive,
+		start,
+		stop,
+		pause,
+		resume,
+	};
 }

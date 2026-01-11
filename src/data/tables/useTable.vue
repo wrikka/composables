@@ -27,41 +27,41 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useTable } from '../useTable'
+import { ref } from "vue";
+import { useTable } from "../useTable";
 
 const data = ref([
-  { id: 1, name: 'Alice', age: 30 },
-  { id: 2, name: 'Bob', age: 25 },
-  { id: 3, name: 'Charlie', age: 35 },
-  { id: 4, name: 'David', age: 28 },
-  { id: 5, name: 'Eve', age: 22 },
-  { id: 6, name: 'Frank', age: 40 },
+	{ id: 1, name: "Alice", age: 30 },
+	{ id: 2, name: "Bob", age: 25 },
+	{ id: 3, name: "Charlie", age: 35 },
+	{ id: 4, name: "David", age: 28 },
+	{ id: 5, name: "Eve", age: 22 },
+	{ id: 6, name: "Frank", age: 40 },
 ]);
 
-const { 
-  paginatedList, 
-  currentPage, 
-  pageCount, 
-  isFirstPage, 
-  isLastPage, 
-  next, 
-  prev, 
-  searchTerm, 
-  setSort,
-  sortState
-} = useTable(data, { 
-  initialSort: { key: 'name', order: 'asc' },
-  searchKeys: ['name'],
-  pageSize: 3
+const {
+	paginatedList,
+	currentPage,
+	pageCount,
+	isFirstPage,
+	isLastPage,
+	next,
+	prev,
+	searchTerm,
+	setSort,
+	sortState,
+} = useTable(data, {
+	initialSort: { key: "name", order: "asc" },
+	searchKeys: ["name"],
+	pageSize: 3,
 });
 
-const sortIndicator = (key) => {
-  if (sortState.value.key === key) {
-    return sortState.value.order === 'asc' ? '🔼' : '🔽';
-  }
-  return '';
-}
+const _sortIndicator = (key) => {
+	if (sortState.value.key === key) {
+		return sortState.value.order === "asc" ? "🔼" : "🔽";
+	}
+	return "";
+};
 </script>
 
 <style scoped>

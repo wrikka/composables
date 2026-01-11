@@ -1,111 +1,113 @@
-import { ref } from 'vue'
+import { ref } from "vue";
 
 export interface UseCopyToClipboardOptions {
-  timeout?: number
+	timeout?: number;
 }
 
 export function useCopyToClipboard(options: UseCopyToClipboardOptions = {}) {
-  const { timeout = 2000 } = options
-  
-  const isSupported = ref(!!navigator.clipboard)
-  const isCopied = ref(false)
-  const error = ref<string | null>(null)
+	const { timeout = 2000 } = options;
 
-  const copy = async (text: string): Promise<boolean> => {
-    if (!isSupported.value) {
-      error.value = 'Clipboard API is not supported'
-      return false
-    }
+	const isSupported = ref(!!navigator.clipboard);
+	const isCopied = ref(false);
+	const error = ref<string | null>(null);
 
-    try {
-      await navigator.clipboard.writeText(text)
-      isCopied.value = true
-      error.value = null
+	const copy = async (text: string): Promise<boolean> => {
+		if (!isSupported.value) {
+			error.value = "Clipboard API is not supported";
+			return false;
+		}
 
-      // Reset isCopied after timeout
-      setTimeout(() => {
-        isCopied.value = false
-      }, timeout)
+		try {
+			await navigator.clipboard.writeText(text);
+			isCopied.value = true;
+			error.value = null;
 
-      return true
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Failed to copy'
-      isCopied.value = false
-      return false
-    }
-  }
+			// Reset isCopied after timeout
+			setTimeout(() => {
+				isCopied.value = false;
+			}, timeout);
 
-  const copyLegacy = (text: string): boolean => {
-    try {
-      const textArea = document.createElement('textarea')
-      textArea.value = text
-      textArea.style.position = 'fixed'
-      textArea.style.left = '-999999px'
-      textArea.style.top = '-999999px'
-      document.body.appendChild(textArea)
-      textArea.focus()
-      textArea.select()
+			return true;
+		} catch (err) {
+			error.value = err instanceof Error ? err.message : "Failed to copy";
+			isCopied.value = false;
+			return false;
+		}
+	};
 
-      const successful = document.execCommand('copy')
-      document.body.removeChild(textArea)
+	const copyLegacy = (text: string): boolean => {
+		try {
+			const textArea = document.createElement("textarea");
+			textArea.value = text;
+			textArea.style.position = "fixed";
+			textArea.style.left = "-999999px";
+			textArea.style.top = "-999999px";
+			document.body.appendChild(textArea);
+			textArea.focus();
+			textArea.select();
 
-      if (successful) {
-        isCopied.value = true
-        error.value = null
-        setTimeout(() => {
-          isCopied.value = false
-        }, timeout)
-      } else {
-        error.value = 'Failed to copy using legacy method'
-      }
+			const successful = document.execCommand("copy");
+			document.body.removeChild(textArea);
 
-      return successful
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Failed to copy'
-      isCopied.value = false
-      return false
-    }
-  }
+			if (successful) {
+				isCopied.value = true;
+				error.value = null;
+				setTimeout(() => {
+					isCopied.value = false;
+				}, timeout);
+			} else {
+				error.value = "Failed to copy using legacy method";
+			}
 
-  const paste = async (): Promise<string | null> => {
-    if (!isSupported.value) {
-      error.value = 'Clipboard API is not supported'
-      return null
-    }
+			return successful;
+		} catch (err) {
+			error.value = err instanceof Error ? err.message : "Failed to copy";
+			isCopied.value = false;
+			return false;
+		}
+	};
 
-    try {
-      const text = await navigator.clipboard.readText()
-      error.value = null
-      return text
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Failed to read clipboard'
-      return null
-    }
-  }
+	const paste = async (): Promise<string | null> => {
+		if (!isSupported.value) {
+			error.value = "Clipboard API is not supported";
+			return null;
+		}
 
-  const clear = async (): Promise<boolean> => {
-    if (!isSupported.value) {
-      error.value = 'Clipboard API is not supported'
-      return false
-    }
+		try {
+			const text = await navigator.clipboard.readText();
+			error.value = null;
+			return text;
+		} catch (err) {
+			error.value =
+				err instanceof Error ? err.message : "Failed to read clipboard";
+			return null;
+		}
+	};
 
-    try {
-      await navigator.clipboard.writeText('')
-      error.value = null
-      return true
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Failed to clear clipboard'
-      return false
-    }
-  }
+	const clear = async (): Promise<boolean> => {
+		if (!isSupported.value) {
+			error.value = "Clipboard API is not supported";
+			return false;
+		}
 
-  return {
-    isSupported,
-    isCopied,
-    error,
-    copy,
-    copyLegacy,
-    paste,
-    clear
-  }
+		try {
+			await navigator.clipboard.writeText("");
+			error.value = null;
+			return true;
+		} catch (err) {
+			error.value =
+				err instanceof Error ? err.message : "Failed to clear clipboard";
+			return false;
+		}
+	};
+
+	return {
+		isSupported,
+		isCopied,
+		error,
+		copy,
+		copyLegacy,
+		paste,
+		clear,
+	};
 }

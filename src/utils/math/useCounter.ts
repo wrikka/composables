@@ -1,13 +1,13 @@
-import { ref } from 'vue'
+import { ref } from "vue";
 
 export function useCounter(initialValue = 0) {
-  const count = ref(initialValue)
+	const count = ref(initialValue);
 
-  const inc = (delta = 1) => (count.value += delta)
-  const dec = (delta = 1) => (count.value -= delta)
-  const get = () => count.value
-  const set = (val: number) => (count.value = val)
-  const reset = () => (count.value = initialValue)
+	const inc = (delta = 1) => (count.value += delta);
+	const dec = (delta = 1) => (count.value -= delta);
+	const get = () => count.value;
+	const set = (val: number) => (count.value = val);
+	const reset = () => (count.value = initialValue);
 
-  return { count, inc, dec, get, set, reset }
+	return { count, inc, dec, get, set, reset };
 }

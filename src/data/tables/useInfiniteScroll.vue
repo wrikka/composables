@@ -1,23 +1,26 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useInfiniteScroll } from './useInfiniteScroll'
+import { ref } from "vue";
+import { useInfiniteScroll } from "./useInfiniteScroll";
 
-const items = ref(Array.from({ length: 20 }, (_, i) => i + 1))
-const container = ref<HTMLElement | null>(null)
+const items = ref(Array.from({ length: 20 }, (_, i) => i + 1));
+const container = ref<HTMLElement | null>(null);
 
 const { isLoading, hasMore } = useInfiniteScroll({
-  target: container,
-  distance: 10,
-  onLoad: async () => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    const nextItems = Array.from({ length: 10 }, (_, i) => items.value.length + i + 1)
-    items.value.push(...nextItems)
-    if (items.value.length >= 100) {
-      hasMore.value = false
-    }
-  },
-})
+	target: container,
+	distance: 10,
+	onLoad: async () => {
+		// Simulate API call
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+		const nextItems = Array.from(
+			{ length: 10 },
+			(_, i) => items.value.length + i + 1,
+		);
+		items.value.push(...nextItems);
+		if (items.value.length >= 100) {
+			hasMore.value = false;
+		}
+	},
+});
 </script>
 
 <template>

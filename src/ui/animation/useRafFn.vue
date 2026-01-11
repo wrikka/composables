@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRafFn } from './useRafFn'
+import { ref } from "vue";
+import { useRafFn } from "./useRafFn";
 
-const count = ref(0)
+const count = ref(0);
 
 useRafFn(() => {
-  count.value++
-})
+	count.value++;
+});
 </script>
 
 <template>

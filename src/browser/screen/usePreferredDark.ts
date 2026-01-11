@@ -1,56 +1,62 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from "vue";
 
 export interface UsePreferredDarkOptions {
-  defaultValue?: boolean
-  window?: Window
+	defaultValue?: boolean;
+	window?: Window;
 }
 
 export function usePreferredDark(options: UsePreferredDarkOptions = {}) {
-  const { defaultValue = false, window: targetWindow = window } = options
-  
-  const isDark = ref(defaultValue)
-  const isSupported = ref(false)
+	const { defaultValue = false, window: targetWindow = window } = options;
 
-  const update = () => {
-    if (targetWindow.matchMedia) {
-      const mediaQuery = targetWindow.matchMedia('(prefers-color-scheme: dark)')
-      isDark.value = mediaQuery.matches
-    }
-  }
+	const isDark = ref(defaultValue);
+	const isSupported = ref(false);
 
-  const checkSupport = () => {
-    isSupported.value = !!(targetWindow.matchMedia)
-  }
+	const update = () => {
+		if (targetWindow.matchMedia) {
+			const mediaQuery = targetWindow.matchMedia(
+				"(prefers-color-scheme: dark)",
+			);
+			isDark.value = mediaQuery.matches;
+		}
+	};
 
-  onMounted(() => {
-    checkSupport()
-    update()
-    
-    if (targetWindow.matchMedia) {
-      const mediaQuery = targetWindow.matchMedia('(prefers-color-scheme: dark)')
-      
-      if (mediaQuery.addEventListener) {
-        mediaQuery.addEventListener('change', update)
-      } else if ((mediaQuery as any).addListener) {
-        (mediaQuery as any).addListener(update)
-      }
-    }
-  })
+	const checkSupport = () => {
+		isSupported.value = !!targetWindow.matchMedia;
+	};
 
-  onUnmounted(() => {
-    if (targetWindow.matchMedia) {
-      const mediaQuery = targetWindow.matchMedia('(prefers-color-scheme: dark)')
-      
-      if (mediaQuery.removeEventListener) {
-        mediaQuery.removeEventListener('change', update)
-      } else if ((mediaQuery as any).removeListener) {
-        (mediaQuery as any).removeListener(update)
-      }
-    }
-  })
+	onMounted(() => {
+		checkSupport();
+		update();
 
-  return {
-    isDark,
-    isSupported
-  }
+		if (targetWindow.matchMedia) {
+			const mediaQuery = targetWindow.matchMedia(
+				"(prefers-color-scheme: dark)",
+			);
+
+			if (mediaQuery.addEventListener) {
+				mediaQuery.addEventListener("change", update);
+			} else if ((mediaQuery as any).addListener) {
+				(mediaQuery as any).addListener(update);
+			}
+		}
+	});
+
+	onUnmounted(() => {
+		if (targetWindow.matchMedia) {
+			const mediaQuery = targetWindow.matchMedia(
+				"(prefers-color-scheme: dark)",
+			);
+
+			if (mediaQuery.removeEventListener) {
+				mediaQuery.removeEventListener("change", update);
+			} else if ((mediaQuery as any).removeListener) {
+				(mediaQuery as any).removeListener(update);
+			}
+		}
+	});
+
+	return {
+		isDark,
+		isSupported,
+	};
 }

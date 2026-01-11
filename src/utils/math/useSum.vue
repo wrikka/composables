@@ -9,17 +9,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useSum } from './useSum'
+import { ref } from "vue";
+import { useSum } from "./useSum";
 
-const numbers = ref([1, 2, 3, 4, 5])
-const newNumber = ref(6)
-const { sum } = useSum(numbers)
+const numbers = ref([1, 2, 3, 4, 5]);
+const newNumber = ref(6);
+const { sum } = useSum(numbers);
 
-const addNumber = () => {
-  if (typeof newNumber.value === 'number') {
-    numbers.value.push(newNumber.value)
-    newNumber.value = 0
-  }
-}
+const _addNumber = () => {
+	if (typeof newNumber.value === "number") {
+		numbers.value.push(newNumber.value);
+		newNumber.value = 0;
+	}
+};
 </script>

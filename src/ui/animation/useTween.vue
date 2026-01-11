@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useTween } from './useTween'
-import { easeInOutCubic } from './easing'
+import { ref } from "vue";
+import { easeInOutCubic } from "./easing";
+import { useTween } from "./useTween";
 
-const from = ref(0)
-const to = ref(1000)
+const from = ref(0);
+const to = ref(1000);
 
-const tweenedValue = useTween(from, to, {
-  duration: 2000,
-  easing: easeInOutCubic,
-})
+const _tweenedValue = useTween(from, to, {
+	duration: 2000,
+	easing: easeInOutCubic,
+});
 </script>
 
 <template>

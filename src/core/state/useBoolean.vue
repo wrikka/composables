@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { useBoolean } from './useBoolean'
+import { useBoolean } from "./useBoolean";
 
-const { value, toggle, setTrue, setFalse } = useBoolean(false)
+const { value, toggle, setTrue, setFalse } = useBoolean(false);
 </script>

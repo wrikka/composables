@@ -1,111 +1,113 @@
-import { ref, onMounted, onUnmounted, getCurrentInstance } from 'vue'
+import { getCurrentInstance, onMounted, onUnmounted, ref } from "vue";
 
 export interface UseIdleOptions {
-  timeout?: number
-  events?: string[]
-  initialState?: boolean
+	timeout?: number;
+	events?: string[];
+	initialState?: boolean;
 }
 
 export function useIdle(options: UseIdleOptions = {}) {
-  const {
-    timeout = 60000, // 1 minute
-    events = [
-      'mousedown',
-      'mousemove',
-      'keypress',
-      'scroll',
-      'touchstart',
-      'click'
-    ],
-    initialState = false
-  } = options
+	const {
+		timeout = 60000, // 1 minute
+		events = [
+			"mousedown",
+			"mousemove",
+			"keypress",
+			"scroll",
+			"touchstart",
+			"click",
+		],
+		initialState = false,
+	} = options;
 
-  const idle = ref(initialState)
-  const lastActive = ref(Date.now())
+	const idle = ref(initialState);
+	const lastActive = ref(Date.now());
 
-  let timeoutId: NodeJS.Timeout | null = null
-  let isRunning = false
+	let timeoutId: NodeJS.Timeout | null = null;
+	let isRunning = false;
 
-  const setupListeners = () => {
-    events.forEach((event) => {
-      document.addEventListener(event, handleActivity as EventListener, { passive: true })
-    })
-  }
+	const setupListeners = () => {
+		events.forEach((event) => {
+			document.addEventListener(event, handleActivity as EventListener, {
+				passive: true,
+			});
+		});
+	};
 
-  const cleanupListeners = () => {
-    events.forEach((event) => {
-      document.removeEventListener(event, handleActivity as EventListener)
-    })
-  }
+	const cleanupListeners = () => {
+		events.forEach((event) => {
+			document.removeEventListener(event, handleActivity as EventListener);
+		});
+	};
 
-  const handleActivity = () => {
-    if (!isRunning) return
-    lastActive.value = Date.now()
-    
-    if (idle.value) {
-      idle.value = false
-    }
+	const handleActivity = () => {
+		if (!isRunning) return;
+		lastActive.value = Date.now();
 
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-    }
+		if (idle.value) {
+			idle.value = false;
+		}
 
-    timeoutId = setTimeout(() => {
-      idle.value = true
-      timeoutId = null
-    }, timeout)
-  }
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+		}
 
-  const start = () => {
-    isRunning = true
-    handleActivity()
-  }
+		timeoutId = setTimeout(() => {
+			idle.value = true;
+			timeoutId = null;
+		}, timeout);
+	};
 
-  const stop = () => {
-    isRunning = false
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-      timeoutId = null
-    }
-  }
+	const start = () => {
+		isRunning = true;
+		handleActivity();
+	};
 
-  const reset = () => {
-    idle.value = initialState
-    lastActive.value = Date.now()
+	const stop = () => {
+		isRunning = false;
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+			timeoutId = null;
+		}
+	};
 
-    if (isRunning) {
-      start()
-    } else {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-        timeoutId = null
-      }
-    }
-  }
+	const reset = () => {
+		idle.value = initialState;
+		lastActive.value = Date.now();
 
-  // Initialize immediately so unit tests (without mounting) can still work
-  setupListeners()
-  if (!initialState) {
-    start()
-  }
+		if (isRunning) {
+			start();
+		} else {
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+				timeoutId = null;
+			}
+		}
+	};
 
-  const instance = getCurrentInstance()
-  if (instance) {
-    onMounted(() => {
-      // no-op: already initialized
-    })
+	// Initialize immediately so unit tests (without mounting) can still work
+	setupListeners();
+	if (!initialState) {
+		start();
+	}
 
-    onUnmounted(() => {
-      stop()
-      cleanupListeners()
-    })
-  }
+	const instance = getCurrentInstance();
+	if (instance) {
+		onMounted(() => {
+			// no-op: already initialized
+		});
 
-  return {
-    idle,
-    lastActive,
-    start,
-    stop,
-    reset
-  }
+		onUnmounted(() => {
+			stop();
+			cleanupListeners();
+		});
+	}
+
+	return {
+		idle,
+		lastActive,
+		start,
+		stop,
+		reset,
+	};
 }

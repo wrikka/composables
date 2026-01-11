@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useTextAnimation } from './useTextAnimation'
+import { ref } from "vue";
+import { useTextAnimation } from "./useTextAnimation";
 
-const text = ref('This is a typewriter effect created with Vue Composables!')
-const { animatedText, restart } = useTextAnimation(text, { interval: 50 })
+const text = ref("This is a typewriter effect created with Vue Composables!");
+const { animatedText, restart } = useTextAnimation(text, { interval: 50 });
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useLocalStorage } from './useLocalStorage'
+import { useLocalStorage } from "./useLocalStorage";
 
-const name = useLocalStorage('name', 'Anonymous')
+const _name = useLocalStorage("name", "Anonymous");
 </script>
 
 <template>

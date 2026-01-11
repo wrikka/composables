@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { usePreferredDark } from './usePreferredDark'
+import { usePreferredDark } from "./usePreferredDark";
 
-const { isDark, isSupported } = usePreferredDark()
+const { isDark, isSupported } = usePreferredDark();
 </script>
 
 <template>

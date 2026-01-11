@@ -1,200 +1,200 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from "vue";
 
 export interface SpeechSynthesisOptions {
-  text?: string
-  voice?: string
-  pitch?: number
-  rate?: number
-  volume?: number
-  lang?: string
+	text?: string;
+	voice?: string;
+	pitch?: number;
+	rate?: number;
+	volume?: number;
+	lang?: string;
 }
 
 export function useSpeechSynthesis(options: SpeechSynthesisOptions = {}) {
-  const {
-    text = '',
-    voice,
-    pitch = 1,
-    rate = 1,
-    volume = 1,
-    lang = 'en-US'
-  } = options
+	const {
+		text = "",
+		voice,
+		pitch = 1,
+		rate = 1,
+		volume = 1,
+		lang = "en-US",
+	} = options;
 
-  const isSupported = ref(!!window.speechSynthesis)
-  const isSpeaking = ref(false)
-  const isPaused = ref(false)
-  const isFinished = ref(false)
-  const error = ref<string | null>(null)
+	const isSupported = ref(!!window.speechSynthesis);
+	const isSpeaking = ref(false);
+	const isPaused = ref(false);
+	const isFinished = ref(false);
+	const error = ref<string | null>(null);
 
-  const speechText = ref(text)
-  const selectedVoice = ref(voice)
-  const speechPitch = ref(pitch)
-  const speechRate = ref(rate)
-  const speechVolume = ref(volume)
-  const speechLang = ref(lang)
+	const speechText = ref(text);
+	const selectedVoice = ref(voice);
+	const speechPitch = ref(pitch);
+	const speechRate = ref(rate);
+	const speechVolume = ref(volume);
+	const speechLang = ref(lang);
 
-  let utterance: SpeechSynthesisUtterance | null = null
+	let utterance: SpeechSynthesisUtterance | null = null;
 
-  const voices = ref<SpeechSynthesisVoice[]>([])
+	const voices = ref<SpeechSynthesisVoice[]>([]);
 
-  const updateVoices = () => {
-    if (isSupported.value) {
-      voices.value = window.speechSynthesis.getVoices()
-    }
-  }
+	const updateVoices = () => {
+		if (isSupported.value) {
+			voices.value = window.speechSynthesis.getVoices();
+		}
+	};
 
-  const createUtterance = (): SpeechSynthesisUtterance => {
-    utterance = new SpeechSynthesisUtterance(speechText.value)
-    
-    if (selectedVoice.value) {
-      const voice = voices.value.find(v => v.name === selectedVoice.value)
-      if (voice) utterance.voice = voice
-    }
-    
-    utterance.pitch = speechPitch.value
-    utterance.rate = speechRate.value
-    utterance.volume = speechVolume.value
-    utterance.lang = speechLang.value
+	const createUtterance = (): SpeechSynthesisUtterance => {
+		utterance = new SpeechSynthesisUtterance(speechText.value);
 
-    utterance.onstart = () => {
-      isSpeaking.value = true
-      isPaused.value = false
-      isFinished.value = false
-      error.value = null
-    }
+		if (selectedVoice.value) {
+			const voice = voices.value.find((v) => v.name === selectedVoice.value);
+			if (voice) utterance.voice = voice;
+		}
 
-    utterance.onend = () => {
-      isSpeaking.value = false
-      isPaused.value = false
-      isFinished.value = true
-    }
+		utterance.pitch = speechPitch.value;
+		utterance.rate = speechRate.value;
+		utterance.volume = speechVolume.value;
+		utterance.lang = speechLang.value;
 
-    utterance.onpause = () => {
-      isPaused.value = true
-    }
+		utterance.onstart = () => {
+			isSpeaking.value = true;
+			isPaused.value = false;
+			isFinished.value = false;
+			error.value = null;
+		};
 
-    utterance.onresume = () => {
-      isPaused.value = false
-    }
+		utterance.onend = () => {
+			isSpeaking.value = false;
+			isPaused.value = false;
+			isFinished.value = true;
+		};
 
-    utterance.onerror = (event) => {
-      error.value = `Speech synthesis error: ${event.error}`
-      isSpeaking.value = false
-      isPaused.value = false
-    }
+		utterance.onpause = () => {
+			isPaused.value = true;
+		};
 
-    return utterance
-  }
+		utterance.onresume = () => {
+			isPaused.value = false;
+		};
 
-  const speak = (newText?: string) => {
-    if (!isSupported.value) {
-      error.value = 'Speech synthesis is not supported'
-      return
-    }
+		utterance.onerror = (event) => {
+			error.value = `Speech synthesis error: ${event.error}`;
+			isSpeaking.value = false;
+			isPaused.value = false;
+		};
 
-    if (newText) {
-      speechText.value = newText
-    }
+		return utterance;
+	};
 
-    if (!speechText.value) {
-      error.value = 'No text to speak'
-      return
-    }
+	const speak = (newText?: string) => {
+		if (!isSupported.value) {
+			error.value = "Speech synthesis is not supported";
+			return;
+		}
 
-    // Cancel any ongoing speech
-    window.speechSynthesis.cancel()
+		if (newText) {
+			speechText.value = newText;
+		}
 
-    const utter = createUtterance()
-    window.speechSynthesis.speak(utter)
-  }
+		if (!speechText.value) {
+			error.value = "No text to speak";
+			return;
+		}
 
-  const pause = () => {
-    if (isSupported.value && isSpeaking.value) {
-      window.speechSynthesis.pause()
-    }
-  }
+		// Cancel any ongoing speech
+		window.speechSynthesis.cancel();
 
-  const resume = () => {
-    if (isSupported.value && isPaused.value) {
-      window.speechSynthesis.resume()
-    }
-  }
+		const utter = createUtterance();
+		window.speechSynthesis.speak(utter);
+	};
 
-  const cancel = () => {
-    if (isSupported.value) {
-      window.speechSynthesis.cancel()
-      isSpeaking.value = false
-      isPaused.value = false
-      isFinished.value = false
-    }
-  }
+	const pause = () => {
+		if (isSupported.value && isSpeaking.value) {
+			window.speechSynthesis.pause();
+		}
+	};
 
-  const getVoiceByName = (name: string): SpeechSynthesisVoice | undefined => {
-    return voices.value.find(voice => voice.name === name)
-  }
+	const resume = () => {
+		if (isSupported.value && isPaused.value) {
+			window.speechSynthesis.resume();
+		}
+	};
 
-  const getVoicesByLang = (lang: string): SpeechSynthesisVoice[] => {
-    return voices.value.filter(voice => voice.lang.startsWith(lang))
-  }
+	const cancel = () => {
+		if (isSupported.value) {
+			window.speechSynthesis.cancel();
+			isSpeaking.value = false;
+			isPaused.value = false;
+			isFinished.value = false;
+		}
+	};
 
-  const setText = (newText: string) => {
-    speechText.value = newText
-  }
+	const getVoiceByName = (name: string): SpeechSynthesisVoice | undefined => {
+		return voices.value.find((voice) => voice.name === name);
+	};
 
-  const setVoice = (voiceName: string) => {
-    selectedVoice.value = voiceName
-  }
+	const getVoicesByLang = (lang: string): SpeechSynthesisVoice[] => {
+		return voices.value.filter((voice) => voice.lang.startsWith(lang));
+	};
 
-  const setPitch = (newPitch: number) => {
-    speechPitch.value = Math.max(0, Math.min(2, newPitch))
-  }
+	const setText = (newText: string) => {
+		speechText.value = newText;
+	};
 
-  const setRate = (newRate: number) => {
-    speechRate.value = Math.max(0.1, Math.min(10, newRate))
-  }
+	const setVoice = (voiceName: string) => {
+		selectedVoice.value = voiceName;
+	};
 
-  const setVolume = (newVolume: number) => {
-    speechVolume.value = Math.max(0, Math.min(1, newVolume))
-  }
+	const setPitch = (newPitch: number) => {
+		speechPitch.value = Math.max(0, Math.min(2, newPitch));
+	};
 
-  const setLang = (newLang: string) => {
-    speechLang.value = newLang
-  }
+	const setRate = (newRate: number) => {
+		speechRate.value = Math.max(0.1, Math.min(10, newRate));
+	};
 
-  onMounted(() => {
-    if (isSupported.value) {
-      updateVoices()
-      window.speechSynthesis.onvoiceschanged = updateVoices
-    }
-  })
+	const setVolume = (newVolume: number) => {
+		speechVolume.value = Math.max(0, Math.min(1, newVolume));
+	};
 
-  onUnmounted(() => {
-    cancel()
-  })
+	const setLang = (newLang: string) => {
+		speechLang.value = newLang;
+	};
 
-  return {
-    isSupported,
-    isSpeaking,
-    isPaused,
-    isFinished,
-    error,
-    voices,
-    speechText,
-    selectedVoice,
-    speechPitch,
-    speechRate,
-    speechVolume,
-    speechLang,
-    speak,
-    pause,
-    resume,
-    cancel,
-    getVoiceByName,
-    getVoicesByLang,
-    setText,
-    setVoice,
-    setPitch,
-    setRate,
-    setVolume,
-    setLang
-  }
+	onMounted(() => {
+		if (isSupported.value) {
+			updateVoices();
+			window.speechSynthesis.onvoiceschanged = updateVoices;
+		}
+	});
+
+	onUnmounted(() => {
+		cancel();
+	});
+
+	return {
+		isSupported,
+		isSpeaking,
+		isPaused,
+		isFinished,
+		error,
+		voices,
+		speechText,
+		selectedVoice,
+		speechPitch,
+		speechRate,
+		speechVolume,
+		speechLang,
+		speak,
+		pause,
+		resume,
+		cancel,
+		getVoiceByName,
+		getVoicesByLang,
+		setText,
+		setVoice,
+		setPitch,
+		setRate,
+		setVolume,
+		setLang,
+	};
 }

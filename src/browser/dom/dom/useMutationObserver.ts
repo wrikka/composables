@@ -1,31 +1,31 @@
-import { onMounted, onUnmounted, Ref, unref } from 'vue'
+import { onMounted, onUnmounted, type Ref, unref } from "vue";
 
-type Target = Ref<Node | null> | Node
+type Target = Ref<Node | null> | Node;
 
 export function useMutationObserver(
-  target: Target,
-  callback: MutationCallback,
-  options: MutationObserverInit = {},
+	target: Target,
+	callback: MutationCallback,
+	options: MutationObserverInit = {},
 ) {
-  let observer: MutationObserver | null = null
+	let observer: MutationObserver | null = null;
 
-  const start = () => {
-    const targetNode = unref(target)
-    if (targetNode) {
-      observer = new MutationObserver(callback)
-      observer.observe(targetNode, options)
-    }
-  }
+	const start = () => {
+		const targetNode = unref(target);
+		if (targetNode) {
+			observer = new MutationObserver(callback);
+			observer.observe(targetNode, options);
+		}
+	};
 
-  const stop = () => {
-    if (observer) {
-      observer.disconnect()
-      observer = null
-    }
-  }
+	const stop = () => {
+		if (observer) {
+			observer.disconnect();
+			observer = null;
+		}
+	};
 
-  onMounted(start)
-  onUnmounted(stop)
+	onMounted(start);
+	onUnmounted(stop);
 
-  return { start, stop }
+	return { start, stop };
 }

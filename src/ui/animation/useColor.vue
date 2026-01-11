@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useColor } from './useColor'
+import { ref } from "vue";
+import { useColor } from "./useColor";
 
-const fromColor = ref('#ff0000')
-const toColor = ref('#00ff00')
+const fromColor = ref("#ff0000");
+const toColor = ref("#00ff00");
 
-const color = useColor(fromColor, toColor, { duration: 2000 })
+const color = useColor(fromColor, toColor, { duration: 2000 });
 
-const randomize = () => {
-  fromColor.value = color.value
-  toColor.value = `#${Math.floor(Math.random() * 16777215).toString(16)}`
-}
+const _randomize = () => {
+	fromColor.value = color.value;
+	toColor.value = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+};
 </script>
 
 <template>

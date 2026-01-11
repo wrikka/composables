@@ -1,26 +1,25 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useInlineEdit } from './useInlineEdit'
+import { ref } from "vue";
+import { useInlineEdit } from "./useInlineEdit";
 
-const item = ref({ id: 1, name: 'Alice', email: 'alice@example.com' })
+const item = ref({ id: 1, name: "Alice", email: "alice@example.com" });
 
 const onSaveName = async (newItem: typeof item.value) => {
-  // Simulate API call
-  await new Promise(resolve => setTimeout(resolve, 500))
-  item.value = newItem
-  console.log('Saved new name:', newItem.name)
-}
+	// Simulate API call
+	await new Promise((resolve) => setTimeout(resolve, 500));
+	item.value = newItem;
+	console.log("Saved new name:", newItem.name);
+};
 
 const onSaveEmail = async (newItem: typeof item.value) => {
-  // Simulate API call
-  await new Promise(resolve => setTimeout(resolve, 500))
-  item.value = newItem
-  console.log('Saved new email:', newItem.email)
-}
+	// Simulate API call
+	await new Promise((resolve) => setTimeout(resolve, 500));
+	item.value = newItem;
+	console.log("Saved new email:", newItem.email);
+};
 
-const nameEdit = useInlineEdit(item, 'name', onSaveName)
-const emailEdit = useInlineEdit(item, 'email', onSaveEmail)
-
+const _nameEdit = useInlineEdit(item, "name", onSaveName);
+const _emailEdit = useInlineEdit(item, "email", onSaveEmail);
 </script>
 
 <template>

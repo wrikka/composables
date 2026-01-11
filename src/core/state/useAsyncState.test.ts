@@ -1,69 +1,80 @@
-import { describe, it, expect } from 'vitest'
-import { useAsyncState } from './useAsyncState'
+import { describe, expect, it } from "vitest";
+import { useAsyncState } from "./useAsyncState";
 
-const successPromise = () => new Promise(resolve => setTimeout(() => resolve('Success'), 10))
-const errorPromise = () => new Promise((_, reject) => setTimeout(() => reject(new Error('Error')), 10))
+const successPromise = () =>
+	new Promise((resolve) => setTimeout(() => resolve("Success"), 10));
+const errorPromise = () =>
+	new Promise((_, reject) => setTimeout(() => reject(new Error("Error")), 10));
 
-describe('useAsyncState', () => {
-  it('should handle a successful promise', async () => {
-    const { data, isLoading, isReady, error, execute } = useAsyncState(successPromise, { immediate: false })
+describe("useAsyncState", () => {
+	it("should handle a successful promise", async () => {
+		const { data, isLoading, isReady, error, execute } = useAsyncState(
+			successPromise,
+			{ immediate: false },
+		);
 
-    expect(isLoading.value).toBe(false)
-    expect(isReady.value).toBe(false)
-    expect(data.value).toBeUndefined()
+		expect(isLoading.value).toBe(false);
+		expect(isReady.value).toBe(false);
+		expect(data.value).toBeUndefined();
 
-    const promise = execute()
+		const promise = execute();
 
-    expect(isLoading.value).toBe(true)
+		expect(isLoading.value).toBe(true);
 
-    await promise
+		await promise;
 
-    expect(isLoading.value).toBe(false)
-    expect(isReady.value).toBe(true)
-    expect(data.value).toBe('Success')
-    expect(error.value).toBeUndefined()
-  })
+		expect(isLoading.value).toBe(false);
+		expect(isReady.value).toBe(true);
+		expect(data.value).toBe("Success");
+		expect(error.value).toBeUndefined();
+	});
 
-  it('should handle a failing promise', async () => {
-    const { data, isLoading, isReady, error, execute } = useAsyncState(errorPromise, { immediate: false })
+	it("should handle a failing promise", async () => {
+		const { data, isLoading, isReady, error, execute } = useAsyncState(
+			errorPromise,
+			{ immediate: false },
+		);
 
-    const promise = execute()
+		const promise = execute();
 
-    expect(isLoading.value).toBe(true)
+		expect(isLoading.value).toBe(true);
 
-    await promise.catch(() => {})
+		await promise.catch(() => {});
 
-    expect(isLoading.value).toBe(false)
-    expect(isReady.value).toBe(false)
-    expect(data.value).toBeUndefined()
-    expect(error.value).toBeInstanceOf(Error)
-    expect(error.value?.message).toBe('Error')
-  })
+		expect(isLoading.value).toBe(false);
+		expect(isReady.value).toBe(false);
+		expect(data.value).toBeUndefined();
+		expect(error.value).toBeInstanceOf(Error);
+		expect(error.value?.message).toBe("Error");
+	});
 
-  it('should execute immediately if immediate is true', async () => {
-    const { isLoading, isReady } = useAsyncState(successPromise, { immediate: true })
-    
-    expect(isLoading.value).toBe(true)
-    expect(isReady.value).toBe(false)
+	it("should execute immediately if immediate is true", async () => {
+		const { isLoading, isReady } = useAsyncState(successPromise, {
+			immediate: true,
+		});
 
-    await new Promise(resolve => setTimeout(resolve, 20)) // wait for promise to resolve
+		expect(isLoading.value).toBe(true);
+		expect(isReady.value).toBe(false);
 
-    expect(isLoading.value).toBe(false)
-    expect(isReady.value).toBe(true)
-  })
+		await new Promise((resolve) => setTimeout(resolve, 20)); // wait for promise to resolve
 
-  it('should reset the state', async () => {
-    const { data, isReady, reset } = useAsyncState(successPromise, { immediate: true })
+		expect(isLoading.value).toBe(false);
+		expect(isReady.value).toBe(true);
+	});
 
-    await new Promise(resolve => setTimeout(resolve, 20))
+	it("should reset the state", async () => {
+		const { data, isReady, reset } = useAsyncState(successPromise, {
+			immediate: true,
+		});
 
-    expect(isReady.value).toBe(true)
-    expect(data.value).toBe('Success')
+		await new Promise((resolve) => setTimeout(resolve, 20));
 
-    reset()
+		expect(isReady.value).toBe(true);
+		expect(data.value).toBe("Success");
 
-    expect(isReady.value).toBe(false)
-    expect(data.value).toBeUndefined()
-  })
-})
+		reset();
 
+		expect(isReady.value).toBe(false);
+		expect(data.value).toBeUndefined();
+	});
+});

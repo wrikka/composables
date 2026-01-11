@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useClipboardAPI } from './useClipboardAPI'
+import { ref } from "vue";
+import { useClipboardAPI } from "./useClipboardAPI";
 
-const source = ref('Hello from Clipboard API')
-const pasted = ref<string | null>(null)
-const { copy, paste, isSupported } = useClipboardAPI()
+const _source = ref("Hello from Clipboard API");
+const pasted = ref<string | null>(null);
+const { copy, paste, isSupported } = useClipboardAPI();
 
-async function handlePaste() {
-  pasted.value = await paste()
+async function _handlePaste() {
+	pasted.value = await paste();
 }
 </script>
 

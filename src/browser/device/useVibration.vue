@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useVibration } from './useVibration'
+import { useVibration } from "./useVibration";
 
-const { isSupported, vibrate, stopVibration } = useVibration()
+const { isSupported, vibrate, stopVibration } = useVibration();
 
-const startVibration = () => {
-  vibrate(200)
-}
+const _startVibration = () => {
+	vibrate(200);
+};
 </script>
 
 <template>

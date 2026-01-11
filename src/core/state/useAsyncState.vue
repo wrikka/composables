@@ -9,19 +9,19 @@
 </template>
 
 <script setup>
-import { useAsyncState } from './useAsyncState'
+import { useAsyncState } from "./useAsyncState";
 
 const asyncFunction = (delay) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(`Resolved after ${delay}ms`)
-    }, delay)
-  })
-}
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			resolve(`Resolved after ${delay}ms`);
+		}, delay);
+	});
+};
 
 const { state, isLoading, isReady, error, execute } = useAsyncState(
-  asyncFunction,
-  null,
-  { immediate: false }
-)
+	asyncFunction,
+	null,
+	{ immediate: false },
+);
 </script>

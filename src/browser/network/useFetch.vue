@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useFetch } from './useFetch';
+import { ref } from "vue";
+import { useFetch } from "./useFetch";
 
 interface Post {
-  id: number;
-  title: string;
-  body: string;
+	id: number;
+	title: string;
+	body: string;
 }
 
 const id = ref(1);
 const url = ref(`https://jsonplaceholder.typicode.com/posts/${id.value}`);
 
-const { data, error, isFetching, execute } = useFetch<Post>(url, { immediate: false });
+const { data, error, isFetching, execute } = useFetch<Post>(url, {
+	immediate: false,
+});
 
-const next = () => {
-  id.value++;
-  url.value = `https://jsonplaceholder.typicode.com/posts/${id.value}`;
+const _next = () => {
+	id.value++;
+	url.value = `https://jsonplaceholder.typicode.com/posts/${id.value}`;
 };
 </script>
 

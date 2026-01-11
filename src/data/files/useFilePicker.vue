@@ -14,10 +14,10 @@
 </template>
 
 <script setup>
-import { useFilePicker } from '../useFilePicker'
+import { useFilePicker } from "../useFilePicker";
 
 const { files, open } = useFilePicker({
-  multiple: true,
-  accept: 'image/*',
-})
+	multiple: true,
+	accept: "image/*",
+});
 </script>

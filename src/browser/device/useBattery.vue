@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useBattery } from './useBattery'
+import { useBattery } from "./useBattery";
 
-const { isSupported, charging, chargingTime, dischargingTime, level } = useBattery()
+const { isSupported, charging, chargingTime, dischargingTime, level } =
+	useBattery();
 </script>
 
 <template>

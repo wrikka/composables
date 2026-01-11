@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { usePageVisibility } from './usePageVisibility'
+import { usePageVisibility } from "./usePageVisibility";
 
-const { isVisible } = usePageVisibility()
+const { isVisible } = usePageVisibility();
 </script>
 
 <template>

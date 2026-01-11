@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useFocus } from './useFocus'
+import { ref } from "vue";
+import { useFocus } from "./useFocus";
 
-const inputEl = ref<HTMLInputElement | null>(null)
-const { isFocused } = useFocus(inputEl)
+const inputEl = ref<HTMLInputElement | null>(null);
+const { isFocused } = useFocus(inputEl);
 </script>
 
 <template>

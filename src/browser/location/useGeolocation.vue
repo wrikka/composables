@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { useGeolocation } from './useGeolocation'
+import { useGeolocation } from "./useGeolocation";
 
-const { isSupported, position, error, getCurrentPosition, startWatching, stopWatching } = useGeolocation({ watchPosition: true })
+const {
+	isSupported,
+	position,
+	error,
+	getCurrentPosition,
+	startWatching,
+	stopWatching,
+} = useGeolocation({ watchPosition: true });
 </script>
 
 <template>

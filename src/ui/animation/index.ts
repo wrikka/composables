@@ -1,1 +1,1 @@
-export * from './useIntervalFn';
+export * from "./useIntervalFn";

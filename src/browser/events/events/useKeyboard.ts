@@ -1,83 +1,86 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from "vue";
 
 export interface UseKeyboardOptions {
-  target?: EventTarget
-  passive?: boolean
+	target?: EventTarget;
+	passive?: boolean;
 }
 
 export function useKeyboard(options: UseKeyboardOptions = {}) {
-  const { target = window, passive = true } = options
-  
-  const pressed = ref<Set<string>>(new Set())
-  const lastKey = ref<string | null>(null)
-  const ctrlPressed = ref(false)
-  const shiftPressed = ref(false)
-  const altPressed = ref(false)
-  const metaPressed = ref(false)
+	const { target = window, passive = true } = options;
 
-  const handleKeyDown = (event: Event) => {
-    const keyboardEvent = event as KeyboardEvent
-    pressed.value.add(keyboardEvent.key)
-    lastKey.value = keyboardEvent.key
-    
-    ctrlPressed.value = keyboardEvent.ctrlKey
-    shiftPressed.value = keyboardEvent.shiftKey
-    altPressed.value = keyboardEvent.altKey
-    metaPressed.value = keyboardEvent.metaKey
-  }
+	const pressed = ref<Set<string>>(new Set());
+	const lastKey = ref<string | null>(null);
+	const ctrlPressed = ref(false);
+	const shiftPressed = ref(false);
+	const altPressed = ref(false);
+	const metaPressed = ref(false);
 
-  const handleKeyUp = (event: Event) => {
-    const keyboardEvent = event as KeyboardEvent
-    pressed.value.delete(keyboardEvent.key)
-    
-    ctrlPressed.value = keyboardEvent.ctrlKey
-    shiftPressed.value = keyboardEvent.shiftKey
-    altPressed.value = keyboardEvent.altKey
-    metaPressed.value = keyboardEvent.metaKey
-  }
+	const handleKeyDown = (event: Event) => {
+		const keyboardEvent = event as KeyboardEvent;
+		pressed.value.add(keyboardEvent.key);
+		lastKey.value = keyboardEvent.key;
 
-  const isPressed = (key: string) => pressed.value.has(key)
+		ctrlPressed.value = keyboardEvent.ctrlKey;
+		shiftPressed.value = keyboardEvent.shiftKey;
+		altPressed.value = keyboardEvent.altKey;
+		metaPressed.value = keyboardEvent.metaKey;
+	};
 
-  const isHotkey = (hotkey: string) => {
-    const keys = hotkey.toLowerCase().split('+').map(k => k.trim())
-    
-    return keys.every(key => {
-      switch (key) {
-        case 'ctrl':
-        case 'control':
-          return ctrlPressed.value
-        case 'shift':
-          return shiftPressed.value
-        case 'alt':
-          return altPressed.value
-        case 'meta':
-        case 'cmd':
-        case 'command':
-          return metaPressed.value
-        default:
-          return isPressed(key.toLowerCase())
-      }
-    })
-  }
+	const handleKeyUp = (event: Event) => {
+		const keyboardEvent = event as KeyboardEvent;
+		pressed.value.delete(keyboardEvent.key);
 
-  onMounted(() => {
-    target.addEventListener('keydown', handleKeyDown, { passive })
-    target.addEventListener('keyup', handleKeyUp, { passive })
-  })
+		ctrlPressed.value = keyboardEvent.ctrlKey;
+		shiftPressed.value = keyboardEvent.shiftKey;
+		altPressed.value = keyboardEvent.altKey;
+		metaPressed.value = keyboardEvent.metaKey;
+	};
 
-  onUnmounted(() => {
-    target.removeEventListener('keydown', handleKeyDown)
-    target.removeEventListener('keyup', handleKeyUp)
-  })
+	const isPressed = (key: string) => pressed.value.has(key);
 
-  return {
-    pressed,
-    lastKey,
-    ctrlPressed,
-    shiftPressed,
-    altPressed,
-    metaPressed,
-    isPressed,
-    isHotkey
-  }
+	const isHotkey = (hotkey: string) => {
+		const keys = hotkey
+			.toLowerCase()
+			.split("+")
+			.map((k) => k.trim());
+
+		return keys.every((key) => {
+			switch (key) {
+				case "ctrl":
+				case "control":
+					return ctrlPressed.value;
+				case "shift":
+					return shiftPressed.value;
+				case "alt":
+					return altPressed.value;
+				case "meta":
+				case "cmd":
+				case "command":
+					return metaPressed.value;
+				default:
+					return isPressed(key.toLowerCase());
+			}
+		});
+	};
+
+	onMounted(() => {
+		target.addEventListener("keydown", handleKeyDown, { passive });
+		target.addEventListener("keyup", handleKeyUp, { passive });
+	});
+
+	onUnmounted(() => {
+		target.removeEventListener("keydown", handleKeyDown);
+		target.removeEventListener("keyup", handleKeyUp);
+	});
+
+	return {
+		pressed,
+		lastKey,
+		ctrlPressed,
+		shiftPressed,
+		altPressed,
+		metaPressed,
+		isPressed,
+		isHotkey,
+	};
 }

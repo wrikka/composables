@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref, computed, type Ref } from 'vue'
-import { useFullscreen } from './useFullscreen'
+import { computed, type Ref, ref } from "vue";
+import { useFullscreen } from "./useFullscreen";
 
-const elementToFullscreen: Ref<HTMLElement | null> = ref(null)
-const { isSupported, toggle, isFullscreen } = useFullscreen()
+const elementToFullscreen: Ref<HTMLElement | null> = ref(null);
+const { isSupported, toggle, isFullscreen } = useFullscreen();
 
-const isFullscreenValue = computed(() => isFullscreen())
+const _isFullscreenValue = computed(() => isFullscreen());
 
-async function toggleElement() {
-  const el = elementToFullscreen.value
-  if (!el) return
-  await toggle(el)
+async function _toggleElement() {
+	const el = elementToFullscreen.value;
+	if (!el) return;
+	await toggle(el);
 }
 </script>
 

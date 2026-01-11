@@ -1,162 +1,168 @@
-import { ref, watch, onUnmounted, type Ref } from 'vue'
+import { onUnmounted, type Ref, ref, watch } from "vue";
 
 export interface UseDebounceOptions {
-  delay?: number
-  immediate?: boolean
-  onLeading?: boolean
-  onTrailing?: boolean
-  maxWait?: number
+	delay?: number;
+	immediate?: boolean;
+	onLeading?: boolean;
+	onTrailing?: boolean;
+	maxWait?: number;
 }
 
 export function useDebounce<T>(
-  source: Ref<T> | (() => T),
-  callback: (value: T) => void,
-  options: UseDebounceOptions = {}
+	source: Ref<T> | (() => T),
+	callback: (value: T) => void,
+	options: UseDebounceOptions = {},
 ): { debouncedValue: Ref<T>; flush: () => void; cancel: () => void } {
-  const {
-    delay = 300,
-    immediate = false,
-    onLeading = false,
-    onTrailing = true,
-    maxWait
-  } = options
+	const {
+		delay = 300,
+		immediate = false,
+		onLeading = false,
+		onTrailing = true,
+		maxWait,
+	} = options;
 
-  const debouncedValue = ref<T>(typeof source === 'function' ? source() : source.value)
-  let timeoutId: NodeJS.Timeout | null = null
-  let maxTimeoutId: NodeJS.Timeout | null = null
-  let lastCallTime = 0
+	const debouncedValue = ref<T>(
+		typeof source === "function" ? source() : source.value,
+	);
+	let timeoutId: NodeJS.Timeout | null = null;
+	let maxTimeoutId: NodeJS.Timeout | null = null;
+	let lastCallTime = 0;
 
-  const invokeFunc = (value: T) => {
-    callback(value)
-    debouncedValue.value = value
-  }
+	const invokeFunc = (value: T) => {
+		callback(value);
+		debouncedValue.value = value;
+	};
 
-  const shouldInvoke = (time: number) => {
-    const timeSinceLastCall = time - lastCallTime
-    const timeWaiting = delay - timeSinceLastCall
-    
-    return (
-      timeSinceLastCall === 0 ||
-      timeSinceLastCall >= delay ||
-      (maxWait && timeWaiting <= 0)
-    )
-  }
+	const shouldInvoke = (time: number) => {
+		const timeSinceLastCall = time - lastCallTime;
+		const timeWaiting = delay - timeSinceLastCall;
 
-  const trailingEdge = (_time: number, value: T) => {
-    timeoutId = null
-    
-    if (onTrailing) {
-      invokeFunc(value)
-    }
-  }
+		return (
+			timeSinceLastCall === 0 ||
+			timeSinceLastCall >= delay ||
+			(maxWait && timeWaiting <= 0)
+		);
+	};
 
-  const leadingEdge = (time: number, value: T) => {
-    lastCallTime = time
-    
-    if (onLeading) {
-      invokeFunc(value)
-    }
-    
-    timeoutId = setTimeout(() => {
-      trailingEdge(Date.now(), value)
-    }, delay)
-  }
+	const trailingEdge = (_time: number, value: T) => {
+		timeoutId = null;
 
-  const remainingWait = (time: number) => {
-    const timeSinceLastCall = time - lastCallTime
-    return Math.max(delay - timeSinceLastCall, 0)
-  }
+		if (onTrailing) {
+			invokeFunc(value);
+		}
+	};
 
-  const timerExpired = (value: T) => {
-    const time = Date.now()
-    
-    if (shouldInvoke(time)) {
-      trailingEdge(time, value)
-    } else {
-      timeoutId = setTimeout(() => {
-        timerExpired(value)
-      }, remainingWait(time))
-    }
-  }
+	const leadingEdge = (time: number, value: T) => {
+		lastCallTime = time;
 
-  const maxWaitExpired = (value: T) => {
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-      timeoutId = null
-    }
-    maxTimeoutId = null
-    invokeFunc(value)
-  }
+		if (onLeading) {
+			invokeFunc(value);
+		}
 
-  const clear = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-      timeoutId = null
-    }
-    if (maxTimeoutId) {
-      clearTimeout(maxTimeoutId)
-      maxTimeoutId = null
-    }
-  }
+		timeoutId = setTimeout(() => {
+			trailingEdge(Date.now(), value);
+		}, delay);
+	};
 
-  const flush = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-      timeoutId = null
-    }
-    if (maxTimeoutId) {
-      clearTimeout(maxTimeoutId)
-      maxTimeoutId = null
-    }
-    const currentValue = typeof source === 'function' ? source() : source.value
-    invokeFunc(currentValue)
-  }
+	const remainingWait = (time: number) => {
+		const timeSinceLastCall = time - lastCallTime;
+		return Math.max(delay - timeSinceLastCall, 0);
+	};
 
-  const cancel = () => {
-    clear()
-    lastCallTime = 0
-  }
+	const timerExpired = (value: T) => {
+		const time = Date.now();
 
-  const debouncedFn = (value: T) => {
-    const time = Date.now()
-    const isInvoking = shouldInvoke(time)
+		if (shouldInvoke(time)) {
+			trailingEdge(time, value);
+		} else {
+			timeoutId = setTimeout(() => {
+				timerExpired(value);
+			}, remainingWait(time));
+		}
+	};
 
-    clear()
-    
-    if (isInvoking) {
-      if (timeoutId === null) {
-        leadingEdge(time, value)
-      } else if (onTrailing) {
-        timeoutId = setTimeout(() => {
-          trailingEdge(Date.now(), value)
-        }, delay)
-      }
-    } else {
-      timeoutId = setTimeout(() => {
-        timerExpired(value)
-      }, remainingWait(time))
-    }
+	const maxWaitExpired = (value: T) => {
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+			timeoutId = null;
+		}
+		maxTimeoutId = null;
+		invokeFunc(value);
+	};
 
-    if (maxWait && !maxTimeoutId) {
-      maxTimeoutId = setTimeout(() => {
-        maxWaitExpired(value)
-      }, maxWait)
-    }
-  }
+	const clear = () => {
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+			timeoutId = null;
+		}
+		if (maxTimeoutId) {
+			clearTimeout(maxTimeoutId);
+			maxTimeoutId = null;
+		}
+	};
 
-  if (typeof source === 'object' && 'value' in source) {
-    watch(source, (newValue) => {
-      debouncedFn(newValue)
-    }, { immediate })
-  }
+	const flush = () => {
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+			timeoutId = null;
+		}
+		if (maxTimeoutId) {
+			clearTimeout(maxTimeoutId);
+			maxTimeoutId = null;
+		}
+		const currentValue = typeof source === "function" ? source() : source.value;
+		invokeFunc(currentValue);
+	};
 
-  onUnmounted(() => {
-    clear()
-  })
+	const cancel = () => {
+		clear();
+		lastCallTime = 0;
+	};
 
-  return {
-    debouncedValue: debouncedValue as Ref<T>,
-    flush,
-    cancel
-  }
+	const debouncedFn = (value: T) => {
+		const time = Date.now();
+		const isInvoking = shouldInvoke(time);
+
+		clear();
+
+		if (isInvoking) {
+			if (timeoutId === null) {
+				leadingEdge(time, value);
+			} else if (onTrailing) {
+				timeoutId = setTimeout(() => {
+					trailingEdge(Date.now(), value);
+				}, delay);
+			}
+		} else {
+			timeoutId = setTimeout(() => {
+				timerExpired(value);
+			}, remainingWait(time));
+		}
+
+		if (maxWait && !maxTimeoutId) {
+			maxTimeoutId = setTimeout(() => {
+				maxWaitExpired(value);
+			}, maxWait);
+		}
+	};
+
+	if (typeof source === "object" && "value" in source) {
+		watch(
+			source,
+			(newValue) => {
+				debouncedFn(newValue);
+			},
+			{ immediate },
+		);
+	}
+
+	onUnmounted(() => {
+		clear();
+	});
+
+	return {
+		debouncedValue: debouncedValue as Ref<T>,
+		flush,
+		cancel,
+	};
 }

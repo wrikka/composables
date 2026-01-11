@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { useConfirm } from './useConfirm'
+import { useConfirm } from "./useConfirm";
 
-const { confirm, status } = useConfirm('Are you sure you want to proceed?')
+const { confirm, status } = useConfirm("Are you sure you want to proceed?");
 </script>

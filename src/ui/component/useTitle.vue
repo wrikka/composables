@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useTitle } from './useTitle'
+import { useTitle } from "./useTitle";
 
-const title = useTitle('My Page Title')
+const _title = useTitle("My Page Title");
 </script>
 
 <template>

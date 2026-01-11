@@ -10,9 +10,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useHash } from '../useHash'
+import { ref } from "vue";
+import { useHash } from "../useHash";
 
-const text = ref('Hello, wcomposables!')
-const { hash, isSupported } = useHash(text)
+const text = ref("Hello, wcomposables!");
+const { hash, isSupported } = useHash(text);
 </script>

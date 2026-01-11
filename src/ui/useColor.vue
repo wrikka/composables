@@ -12,11 +12,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useColor } from '../useColor'
+import { ref } from "vue";
+import { useColor } from "../useColor";
 
-const colorInput = ref('#ff0000')
-const { hex, rgb, rgba, hsl, hsla } = useColor(colorInput)
+const colorInput = ref("#ff0000");
+const { hex, rgb, rgba, hsl, hsla } = useColor(colorInput);
 </script>
 
 <style scoped>

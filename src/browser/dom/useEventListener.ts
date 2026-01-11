@@ -1,38 +1,40 @@
-import { onUnmounted, watch, unref, type Ref } from 'vue';
+import { onUnmounted, type Ref, unref, watch } from "vue";
 
-export type EventTargetRef = Ref<EventTarget | null | undefined> | EventTarget | null;
+export type EventTargetRef =
+	| Ref<EventTarget | null | undefined>
+	| EventTarget
+	| null;
 
 export function useEventListener(
-  target: EventTargetRef,
-  event: string,
-  listener: EventListener,
-  options?: boolean | AddEventListenerOptions
+	target: EventTargetRef,
+	event: string,
+	listener: EventListener,
+	options?: boolean | AddEventListenerOptions,
 ) {
-  let cleanup = () => {};
+	let cleanup = () => {};
 
-  const stopWatch = watch(
-    () => unref(target),
-    (el) => {
-      cleanup();
-      if (!el) return;
+	const stopWatch = watch(
+		() => unref(target),
+		(el) => {
+			cleanup();
+			if (!el) return;
 
-      el.addEventListener(event, listener, options);
+			el.addEventListener(event, listener, options);
 
-      cleanup = () => {
-        el.removeEventListener(event, listener, options);
-        cleanup = () => {};
-      };
-    },
-    { immediate: true, flush: 'post' }
-  );
+			cleanup = () => {
+				el.removeEventListener(event, listener, options);
+				cleanup = () => {};
+			};
+		},
+		{ immediate: true, flush: "post" },
+	);
 
-  const stop = () => {
-    stopWatch();
-    cleanup();
-  };
+	const stop = () => {
+		stopWatch();
+		cleanup();
+	};
 
-  onUnmounted(stop);
+	onUnmounted(stop);
 
-  return stop;
+	return stop;
 }
-

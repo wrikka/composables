@@ -7,40 +7,40 @@
 </template>
 
 <script setup>
-import { defineComponent } from 'vue'
-import { createGlobalState } from './createGlobalState'
+import { defineComponent } from "vue";
+import { createGlobalState } from "./createGlobalState";
 
 // 1. Create the global state
-const useGlobalCounter = createGlobalState(0)
+const useGlobalCounter = createGlobalState(0);
 
 // 2. Define components that use the global state
-const ComponentA = defineComponent({
-  setup() {
-    const counter = useGlobalCounter()
-    return { counter }
-  },
-  template: `
+const _ComponentA = defineComponent({
+	setup() {
+		const counter = useGlobalCounter();
+		return { counter };
+	},
+	template: `
     <div class="component">
       <h3>Component A</h3>
       <p>Counter: {{ counter }}</p>
       <button @click="counter++">Increment</button>
     </div>
-  `
-})
+  `,
+});
 
-const ComponentB = defineComponent({
-  setup() {
-    const counter = useGlobalCounter()
-    return { counter }
-  },
-  template: `
+const _ComponentB = defineComponent({
+	setup() {
+		const counter = useGlobalCounter();
+		return { counter };
+	},
+	template: `
     <div class="component">
       <h3>Component B</h3>
       <p>Counter: {{ counter }}</p>
       <button @click="counter--">Decrement</button>
     </div>
-  `
-})
+  `,
+});
 </script>
 
 <style scoped>

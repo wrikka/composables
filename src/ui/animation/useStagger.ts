@@ -1,43 +1,43 @@
-import { ref, unref, type Ref, type MaybeRef } from 'vue'
+import { type MaybeRef, type Ref, ref, unref } from "vue";
 
 export interface UseStaggerOptions extends KeyframeAnimationOptions {
-  stagger?: number
+	stagger?: number;
 }
 
 export function useStagger(
-  targets: Ref<(HTMLElement | null)[]>,
-  keyframes: MaybeRef<Keyframe[] | PropertyIndexedKeyframes | null>,
-  options: UseStaggerOptions = {}
+	targets: Ref<(HTMLElement | null)[]>,
+	keyframes: MaybeRef<Keyframe[] | PropertyIndexedKeyframes | null>,
+	options: UseStaggerOptions = {},
 ) {
-  const { stagger = 100, ...animateOptions } = options
-  const animations = ref<Animation[]>([])
+	const { stagger = 100, ...animateOptions } = options;
+	const animations = ref<Animation[]>([]);
 
-  const play = () => {
-    cancel()
-    const newAnimations: Animation[] = []
-    targets.value.forEach((el, i) => {
-      if (!el) return
-      const anim = el.animate(unref(keyframes), {
-        ...animateOptions,
-        delay: (animateOptions.delay || 0) + i * stagger,
-      })
-      newAnimations.push(anim)
-    })
-    animations.value = newAnimations
-  }
+	const play = () => {
+		cancel();
+		const newAnimations: Animation[] = [];
+		targets.value.forEach((el, i) => {
+			if (!el) return;
+			const anim = el.animate(unref(keyframes), {
+				...animateOptions,
+				delay: (animateOptions.delay || 0) + i * stagger,
+			});
+			newAnimations.push(anim);
+		});
+		animations.value = newAnimations;
+	};
 
-  const pause = () => {
-    animations.value.forEach((anim) => anim.pause())
-  }
+	const pause = () => {
+		animations.value.forEach((anim) => anim.pause());
+	};
 
-  const finish = () => {
-    animations.value.forEach((anim) => anim.finish())
-  }
+	const finish = () => {
+		animations.value.forEach((anim) => anim.finish());
+	};
 
-  const cancel = () => {
-    animations.value.forEach((anim) => anim.cancel())
-    animations.value = []
-  }
+	const cancel = () => {
+		animations.value.forEach((anim) => anim.cancel());
+		animations.value = [];
+	};
 
-  return { animations, play, pause, finish, cancel }
+	return { animations, play, pause, finish, cancel };
 }

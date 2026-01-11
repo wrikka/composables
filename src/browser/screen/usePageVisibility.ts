@@ -1,50 +1,50 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from "vue";
 
 export interface PageVisibilityOptions {
-  onVisible?: () => void
-  onHidden?: () => void
-  onFocus?: () => void
-  onBlur?: () => void
+	onVisible?: () => void;
+	onHidden?: () => void;
+	onFocus?: () => void;
+	onBlur?: () => void;
 }
 
 export function usePageVisibility(options: PageVisibilityOptions = {}) {
-  const isVisible = ref(!document.hidden)
-  const isFocused = ref(document.hasFocus?.() ?? true)
+	const isVisible = ref(!document.hidden);
+	const isFocused = ref(document.hasFocus?.() ?? true);
 
-  const handleVisibilityChange = () => {
-    isVisible.value = !document.hidden
-    
-    if (isVisible.value) {
-      options.onVisible?.()
-    } else {
-      options.onHidden?.()
-    }
-  }
+	const handleVisibilityChange = () => {
+		isVisible.value = !document.hidden;
 
-  const handleFocus = () => {
-    isFocused.value = true
-    options.onFocus?.()
-  }
+		if (isVisible.value) {
+			options.onVisible?.();
+		} else {
+			options.onHidden?.();
+		}
+	};
 
-  const handleBlur = () => {
-    isFocused.value = false
-    options.onBlur?.()
-  }
+	const handleFocus = () => {
+		isFocused.value = true;
+		options.onFocus?.();
+	};
 
-  onMounted(() => {
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-    window.addEventListener('focus', handleFocus)
-    window.addEventListener('blur', handleBlur)
-  })
+	const handleBlur = () => {
+		isFocused.value = false;
+		options.onBlur?.();
+	};
 
-  onUnmounted(() => {
-    document.removeEventListener('visibilitychange', handleVisibilityChange)
-    window.removeEventListener('focus', handleFocus)
-    window.removeEventListener('blur', handleBlur)
-  })
+	onMounted(() => {
+		document.addEventListener("visibilitychange", handleVisibilityChange);
+		window.addEventListener("focus", handleFocus);
+		window.addEventListener("blur", handleBlur);
+	});
 
-  return {
-    isVisible,
-    isFocused
-  }
+	onUnmounted(() => {
+		document.removeEventListener("visibilitychange", handleVisibilityChange);
+		window.removeEventListener("focus", handleFocus);
+		window.removeEventListener("blur", handleBlur);
+	});
+
+	return {
+		isVisible,
+		isFocused,
+	};
 }

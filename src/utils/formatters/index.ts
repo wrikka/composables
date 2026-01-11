@@ -1,2 +1,2 @@
-export * from './useCurrencyFormatter'
-export * from './useNumberFormatter'
+export * from "./useCurrencyFormatter";
+export * from "./useNumberFormatter";

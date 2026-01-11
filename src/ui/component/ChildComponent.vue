@@ -7,13 +7,13 @@
 </template>
 
 <script setup>
-import { useVModel } from '../useVModel'
+import { useVModel } from "../useVModel";
 
 const props = defineProps({
-  modelValue: String,
-})
+	modelValue: String,
+});
 
-const model = useVModel(props, 'modelValue')
+const _model = useVModel(props, "modelValue");
 </script>
 
 <style scoped>

@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useDraggableRows } from './useDraggableRows'
+import { ref } from "vue";
+import { useDraggableRows } from "./useDraggableRows";
 
 const initialData = ref([
-  { id: 1, name: 'Alice' },
-  { id: 2, name: 'Bob' },
-  { id: 3, name: 'Charlie' },
-  { id: 4, name: 'David' },
-])
+	{ id: 1, name: "Alice" },
+	{ id: 2, name: "Bob" },
+	{ id: 3, name: "Charlie" },
+	{ id: 4, name: "David" },
+]);
 
-const { list, onDragStart, onDragOver, onDrop } = useDraggableRows(initialData)
-
+const { list, onDragStart, onDragOver, onDrop } = useDraggableRows(initialData);
 </script>
 
 <template>

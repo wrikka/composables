@@ -8,17 +8,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useHotkey } from '../useHotkey'
+import { ref } from "vue";
+import { useHotkey } from "../useHotkey";
 
-const inputRef = ref(null)
+const inputRef = ref(null);
 
-useHotkey('ctrl+s, cmd+s', (event) => {
-  event.preventDefault()
-  alert('Saved!')
-})
+useHotkey("ctrl+s, cmd+s", (event) => {
+	event.preventDefault();
+	alert("Saved!");
+});
 
-useHotkey('shift+a', () => {
-  inputRef.value?.focus()
-})
+useHotkey("shift+a", () => {
+	inputRef.value?.focus();
+});
 </script>

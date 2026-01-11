@@ -24,7 +24,8 @@
 </template>
 
 <script setup>
-import { useDeviceMotion } from './useDeviceMotion'
+import { useDeviceMotion } from "./useDeviceMotion";
 
-const { acceleration, accelerationIncludingGravity, rotationRate } = useDeviceMotion()
+const { acceleration, accelerationIncludingGravity, rotationRate } =
+	useDeviceMotion();
 </script>

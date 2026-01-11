@@ -9,7 +9,10 @@
 </template>
 
 <script setup>
-import { useLocalStorage } from './useLocalStorage'
+import { useLocalStorage } from "./useLocalStorage";
 
-const storedValue = useLocalStorage('my-local-storage-key-demo', 'Default Value')
+const _storedValue = useLocalStorage(
+	"my-local-storage-key-demo",
+	"Default Value",
+);
 </script>

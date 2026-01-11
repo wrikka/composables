@@ -21,41 +21,34 @@
 </template>
 
 <script setup>
-import { useForm } from './useForm'
+import { useForm } from "./useForm";
 
 const initialValues = {
-  name: '',
-  email: '',
-}
+	name: "",
+	email: "",
+};
 
 const validator = (values) => {
-  const errors = {}
-  if (!values.name) {
-    errors.name = 'Name is required'
-  }
-  if (!values.email) {
-    errors.email = 'Email is required'
-  } else if (!/.+@.+\..+/.test(values.email)) {
-    errors.email = 'Invalid email format'
-  }
-  return errors
-}
+	const errors = {};
+	if (!values.name) {
+		errors.name = "Name is required";
+	}
+	if (!values.email) {
+		errors.email = "Email is required";
+	} else if (!/.+@.+\..+/.test(values.email)) {
+		errors.email = "Invalid email format";
+	}
+	return errors;
+};
 
-const { 
-  values, 
-  errors, 
-  isValid, 
-  isSubmitting, 
-  getFieldProps, 
-  submit, 
-  reset 
-} = useForm(initialValues, validator)
+const { values, errors, isValid, isSubmitting, getFieldProps, submit, reset } =
+	useForm(initialValues, validator);
 
-const onSubmit = submit(async (formValues) => {
-  alert('Submitting!')
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  alert(`Submitted: ${JSON.stringify(formValues)}`)
-})
+const _onSubmit = submit(async (formValues) => {
+	alert("Submitting!");
+	await new Promise((resolve) => setTimeout(resolve, 1000));
+	alert(`Submitted: ${JSON.stringify(formValues)}`);
+});
 </script>
 
 <style scoped>

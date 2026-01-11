@@ -9,7 +9,10 @@
 </template>
 
 <script setup>
-import { useLocalStorageState } from './useLocalStorageState'
+import { useLocalStorageState } from "./useLocalStorageState";
 
-const storedValue = useLocalStorageState('my-local-storage-key', 'Default Value')
+const _storedValue = useLocalStorageState(
+	"my-local-storage-key",
+	"Default Value",
+);
 </script>

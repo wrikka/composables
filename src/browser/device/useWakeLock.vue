@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useWakeLock } from './useWakeLock'
+import { useWakeLock } from "./useWakeLock";
 
-const { isSupported, isActive, requestWakeLock, releaseWakeLock } = useWakeLock()
+const { isSupported, isActive, requestWakeLock, releaseWakeLock } =
+	useWakeLock();
 </script>
 
 <template>

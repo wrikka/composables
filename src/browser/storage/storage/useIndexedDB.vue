@@ -23,43 +23,43 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import { useIndexedDB } from './useIndexedDB'
+import { reactive, ref } from "vue";
+import { useIndexedDB } from "./useIndexedDB";
 
-const { 
-  status, 
-  data: allItems, 
-  add, 
-  get, 
-  remove, 
-  clear 
-} = useIndexedDB('my-db', 'my-store')
+const {
+	status,
+	data: allItems,
+	add,
+	get,
+	remove,
+	clear,
+} = useIndexedDB("my-db", "my-store");
 
-const newItem = reactive({ key: '', value: '' })
-const keyToGet = ref('')
-const keyToRemove = ref('')
-const retrievedItem = ref(null)
+const newItem = reactive({ key: "", value: "" });
+const _keyToGet = ref("");
+const keyToRemove = ref("");
+const retrievedItem = ref(null);
 
-const addItem = async () => {
-  if (newItem.key && newItem.value) {
-    await add({ key: newItem.key, value: newItem.value })
-    newItem.key = ''
-    newItem.value = ''
-  }
-}
+const _addItem = async () => {
+	if (newItem.key && newItem.value) {
+		await add({ key: newItem.key, value: newItem.value });
+		newItem.key = "";
+		newItem.value = "";
+	}
+};
 
-const getItem = async (key) => {
-  retrievedItem.value = await get(key)
-}
+const _getItem = async (key) => {
+	retrievedItem.value = await get(key);
+};
 
-const removeItem = async (key) => {
-  await remove(key)
-  keyToRemove.value = ''
-}
+const _removeItem = async (key) => {
+	await remove(key);
+	keyToRemove.value = "";
+};
 
-const clearStore = async () => {
-  await clear()
-}
+const _clearStore = async () => {
+	await clear();
+};
 </script>
 
 <style scoped>

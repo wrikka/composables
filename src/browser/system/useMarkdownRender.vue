@@ -8,11 +8,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useMarkdownRender } from '../useMarkdownRender'
+import { ref } from "vue";
+import { useMarkdownRender } from "../useMarkdownRender";
 
-const markdownSource = ref('# Hello, Markdown!\n\nThis is a demo of `useMarkdownRender`.')
-const { renderedHtml } = useMarkdownRender(markdownSource)
+const markdownSource = ref(
+	"# Hello, Markdown!\n\nThis is a demo of `useMarkdownRender`.",
+);
+const { renderedHtml } = useMarkdownRender(markdownSource);
 </script>
 
 <style scoped>

@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { useToggle } from './useToggle'
+import { useToggle } from "./useToggle";
 
-const [value, toggle] = useToggle(false)
+const [_value, _toggle] = useToggle(false);
 </script>

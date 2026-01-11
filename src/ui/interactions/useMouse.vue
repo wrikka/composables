@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useMouse } from './useMouse'
+import { useMouse } from "./useMouse";
 
-const { x, y } = useMouse()
+const { x, y } = useMouse();
 </script>
 
 <template>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useIntervalFn } from './useIntervalFn'
+import { ref } from "vue";
+import { useIntervalFn } from "./useIntervalFn";
 
-const count = ref(0)
+const count = ref(0);
 
 const { pause, resume } = useIntervalFn(() => {
-  count.value++
-}, 1000)
+	count.value++;
+}, 1000);
 </script>
 
 <template>

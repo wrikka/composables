@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useDebounce } from './useDebounce'
+import { ref } from "vue";
+import { useDebounce } from "./useDebounce";
 
-const text = ref('')
-const { debouncedValue } = useDebounce(
-  text,
-  () => {},
-  { delay: 500 }
-)
+const text = ref("");
+const { debouncedValue } = useDebounce(text, () => {}, { delay: 500 });
 </script>
 
 <template>

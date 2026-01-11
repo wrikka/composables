@@ -8,14 +8,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useOnClickOutside } from '../useOnClickOutside'
+import { ref } from "vue";
+import { useOnClickOutside } from "../useOnClickOutside";
 
-const target = ref(null)
+const target = ref(null);
 
 useOnClickOutside(target, () => {
-  alert('Clicked outside!')
-})
+	alert("Clicked outside!");
+});
 </script>
 
 <style scoped>

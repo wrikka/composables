@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useTransition } from './useTransition'
+import { useTransition } from "./useTransition";
 
 const { visible, transitionClass, toggle } = useTransition(false, {
-  duration: 500,
-  enterClass: 'opacity-0',
-  enterActiveClass: 'transition-opacity duration-500',
-  enterToClass: 'opacity-100',
-  leaveClass: 'opacity-100',
-  leaveActiveClass: 'transition-opacity duration-500',
-  leaveToClass: 'opacity-0',
-})
+	duration: 500,
+	enterClass: "opacity-0",
+	enterActiveClass: "transition-opacity duration-500",
+	enterToClass: "opacity-100",
+	leaveClass: "opacity-100",
+	leaveActiveClass: "transition-opacity duration-500",
+	leaveToClass: "opacity-0",
+});
 </script>
 
 <template>

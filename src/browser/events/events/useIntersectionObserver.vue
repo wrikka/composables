@@ -13,15 +13,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useIntersectionObserver } from '../useIntersectionObserver'
+import { ref } from "vue";
+import { useIntersectionObserver } from "../useIntersectionObserver";
 
-const target = ref(null)
-const isVisible = ref(false)
+const target = ref(null);
+const isVisible = ref(false);
 
 useIntersectionObserver(target, ([{ isIntersecting }]) => {
-  isVisible.value = isIntersecting
-})
+	isVisible.value = isIntersecting;
+});
 </script>
 
 <style scoped>

@@ -11,13 +11,13 @@
 </template>
 
 <script setup>
-import { useTemplateRefs } from '../useTemplateRefs'
+import { useTemplateRefs } from "../useTemplateRefs";
 
-const list = [1, 2, 3, 4, 5]
-const [refs, setRef] = useTemplateRefs()
+const _list = [1, 2, 3, 4, 5];
+const [refs, _setRef] = useTemplateRefs();
 
-const logRefs = () => {
-  console.log(refs.value)
-  alert(`Found ${refs.value.length} refs. Check the console.`)
-}
+const _logRefs = () => {
+	console.log(refs.value);
+	alert(`Found ${refs.value.length} refs. Check the console.`);
+};
 </script>

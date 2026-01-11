@@ -9,7 +9,10 @@
 </template>
 
 <script setup>
-import { useSessionStorageState } from './useSessionStorageState'
+import { useSessionStorageState } from "./useSessionStorageState";
 
-const storedValue = useSessionStorageState('my-session-storage-key', 'Default Value')
+const _storedValue = useSessionStorageState(
+	"my-session-storage-key",
+	"Default Value",
+);
 </script>

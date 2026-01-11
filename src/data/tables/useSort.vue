@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useSort } from './useSort'
+import { ref } from "vue";
+import { useSort } from "./useSort";
 
 const data = ref([
-  { id: 3, name: 'Charlie', age: 30 },
-  { id: 1, name: 'Alice', age: 25 },
-  { id: 2, name: 'Bob', age: 35 },
-])
+	{ id: 3, name: "Charlie", age: 30 },
+	{ id: 1, name: "Alice", age: 25 },
+	{ id: 2, name: "Bob", age: 35 },
+]);
 
-const { sortedData, sortBy, sortKey, sortOrder } = useSort(data)
+const { sortedData, sortBy, sortKey, sortOrder } = useSort(data);
 
-const headers = [
-  { key: 'id', label: 'ID' },
-  { key: 'name', label: 'Name' },
-  { key: 'age', label: 'Age' },
-] as const
+const _headers = [
+	{ key: "id", label: "ID" },
+	{ key: "name", label: "Name" },
+	{ key: "age", label: "Age" },
+] as const;
 </script>
 
 <template>

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useUserMedia } from './useUserMedia';
+import { onMounted, ref } from "vue";
+import { useUserMedia } from "./useUserMedia";
 
 const video = ref<HTMLVideoElement | null>(null);
 const { stream, start, stop } = useUserMedia({ video: true });
 
 onMounted(() => {
-  if (video.value) {
-    video.value.srcObject = stream.value;
-  }
+	if (video.value) {
+		video.value.srcObject = stream.value;
+	}
 });
 </script>
 

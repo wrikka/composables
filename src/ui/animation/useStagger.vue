@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useStagger } from './useStagger'
+import { onMounted, ref } from "vue";
+import { useStagger } from "./useStagger";
 
-const itemRefs = ref<HTMLElement[]>([])
+const itemRefs = ref<HTMLElement[]>([]);
 
 const keyframes = [
-  { opacity: 0, transform: 'translateY(20px)' },
-  { opacity: 1, transform: 'translateY(0)' },
-]
+	{ opacity: 0, transform: "translateY(20px)" },
+	{ opacity: 1, transform: "translateY(0)" },
+];
 
 const { play } = useStagger(itemRefs, keyframes, {
-  stagger: 100,
-  duration: 500,
-  easing: 'ease-out',
-})
+	stagger: 100,
+	duration: 500,
+	easing: "ease-out",
+});
 
 onMounted(() => {
-  play()
-})
+	play();
+});
 </script>
 
 <template>

@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useGlobalSearch } from './useGlobalSearch'
+import { ref } from "vue";
+import { useGlobalSearch } from "./useGlobalSearch";
 
 const data = ref([
-  { id: 1, name: 'Alice', email: 'alice@example.com', role: 'Admin' },
-  { id: 2, name: 'Bob', email: 'bob@example.com', role: 'User' },
-  { id: 3, name: 'Charlie', email: 'charlie@work.com', role: 'User' },
-  { id: 4, name: 'David', email: 'david@company.com', role: 'Manager' },
-])
+	{ id: 1, name: "Alice", email: "alice@example.com", role: "Admin" },
+	{ id: 2, name: "Bob", email: "bob@example.com", role: "User" },
+	{ id: 3, name: "Charlie", email: "charlie@work.com", role: "User" },
+	{ id: 4, name: "David", email: "david@company.com", role: "Manager" },
+]);
 
-const { searchTerm, searchResults } = useGlobalSearch(data, ['name', 'email', 'role'])
-
+const { searchTerm, searchResults } = useGlobalSearch(data, [
+	"name",
+	"email",
+	"role",
+]);
 </script>
 
 <template>

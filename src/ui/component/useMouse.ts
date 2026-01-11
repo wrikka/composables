@@ -1,21 +1,21 @@
-import { ref, onMounted, onUnmounted, type Ref } from 'vue'
+import { onMounted, onUnmounted, type Ref, ref } from "vue";
 
 export function useMouse(): { x: Ref<number>; y: Ref<number> } {
-  const x = ref(0)
-  const y = ref(0)
+	const x = ref(0);
+	const y = ref(0);
 
-  const update = (event: MouseEvent) => {
-    x.value = event.pageX
-    y.value = event.pageY
-  }
+	const update = (event: MouseEvent) => {
+		x.value = event.pageX;
+		y.value = event.pageY;
+	};
 
-  onMounted(() => {
-    window.addEventListener('mousemove', update)
-  })
+	onMounted(() => {
+		window.addEventListener("mousemove", update);
+	});
 
-  onUnmounted(() => {
-    window.removeEventListener('mousemove', update)
-  })
+	onUnmounted(() => {
+		window.removeEventListener("mousemove", update);
+	});
 
-  return { x, y }
+	return { x, y };
 }

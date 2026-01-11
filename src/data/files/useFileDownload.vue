@@ -9,15 +9,15 @@
 </template>
 
 <script setup>
-import { useFileDownload } from '../useFileDownload'
+import { useFileDownload } from "../useFileDownload";
 
-const { isDownloading, error, download } = useFileDownload()
+const { isDownloading, error, download } = useFileDownload();
 
-const startDownload = () => {
-  // Using a blob URL as a sample file source
-  const sampleContent = 'Hello, this is a sample file for download.'
-  const blob = new Blob([sampleContent], { type: 'text/plain' })
-  const url = URL.createObjectURL(blob)
-  download(url, { fileName: 'sample.txt' })
-}
+const _startDownload = () => {
+	// Using a blob URL as a sample file source
+	const sampleContent = "Hello, this is a sample file for download.";
+	const blob = new Blob([sampleContent], { type: "text/plain" });
+	const url = URL.createObjectURL(blob);
+	download(url, { fileName: "sample.txt" });
+};
 </script>

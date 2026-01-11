@@ -11,24 +11,24 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useI18n } from './useI18n'
+import { ref } from "vue";
+import { useI18n } from "./useI18n";
 
-const locale = ref('en')
+const locale = ref("en");
 const messages = ref({
-  en: {
-    greeting: 'Hello, World!',
-    nav: {
-      home: 'Home Page',
-    },
-  },
-  fr: {
-    greeting: 'Bonjour, le monde!',
-    nav: {
-      home: 'Page d\'accueil',
-    },
-  },
-})
+	en: {
+		greeting: "Hello, World!",
+		nav: {
+			home: "Home Page",
+		},
+	},
+	fr: {
+		greeting: "Bonjour, le monde!",
+		nav: {
+			home: "Page d'accueil",
+		},
+	},
+});
 
-const { t } = useI18n({ locale, messages })
+const { t } = useI18n({ locale, messages });
 </script>

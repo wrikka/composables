@@ -9,15 +9,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useEventListener } from '../useEventListener'
+import { ref } from "vue";
+import { useEventListener } from "../useEventListener";
 
-const target = ref(null)
-const count = ref(0)
+const target = ref(null);
+const count = ref(0);
 
-useEventListener(target, 'click', () => {
-  count.value++
-})
+useEventListener(target, "click", () => {
+	count.value++;
+});
 </script>
 
 <style scoped>

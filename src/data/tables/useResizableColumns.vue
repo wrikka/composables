@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useResizableColumns } from './useResizableColumns'
+import { ref } from "vue";
+import { useResizableColumns } from "./useResizableColumns";
 
-const tableContainer = ref<HTMLElement | null>(null)
-useResizableColumns(tableContainer)
-
+const tableContainer = ref<HTMLElement | null>(null);
+useResizableColumns(tableContainer);
 </script>
 
 <template>

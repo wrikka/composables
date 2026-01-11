@@ -1,3 +1,3 @@
-export * from './useHotkey'
-export * from './useIdle'
-export * from './useOnClickOutside'
+export * from "./useHotkey";
+export * from "./useIdle";
+export * from "./useOnClickOutside";

@@ -7,8 +7,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import ChildComponent from './ChildComponent.vue'
+import { ref } from "vue";
 
-const parentValue = ref('Hello')
+const _parentValue = ref("Hello");
 </script>

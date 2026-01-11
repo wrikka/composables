@@ -1,72 +1,72 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from "vue";
 
 export interface UseOnClickOutsideOptions {
-  ignore?: (string | HTMLElement)[]
-  capture?: boolean
+	ignore?: (string | HTMLElement)[];
+	capture?: boolean;
 }
 
 export function useOnClickOutside(
-  target: HTMLElement | (() => HTMLElement | null),
-  callback: (event: MouseEvent) => void,
-  options: UseOnClickOutsideOptions = {}
+	target: HTMLElement | (() => HTMLElement | null),
+	callback: (event: MouseEvent) => void,
+	options: UseOnClickOutsideOptions = {},
 ) {
-  const { ignore = [], capture = true } = options
-  const isActive = ref(true)
+	const { ignore = [], capture = true } = options;
+	const isActive = ref(true);
 
-  const shouldIgnore = (event: MouseEvent): boolean => {
-    const targetElement = event.target as HTMLElement
-    
-    // Check if clicked element is in ignore list
-    for (const item of ignore) {
-      if (typeof item === 'string') {
-        if (targetElement.closest(item)) return true
-      } else if (item && item.contains(targetElement)) {
-        return true
-      }
-    }
+	const shouldIgnore = (event: MouseEvent): boolean => {
+		const targetElement = event.target as HTMLElement;
 
-    return false
-  }
+		// Check if clicked element is in ignore list
+		for (const item of ignore) {
+			if (typeof item === "string") {
+				if (targetElement.closest(item)) return true;
+			} else if (item?.contains(targetElement)) {
+				return true;
+			}
+		}
 
-  const handleClick = (event: MouseEvent) => {
-    if (!isActive.value) return
-    if (shouldIgnore(event)) return
+		return false;
+	};
 
-    const targetElement = typeof target === 'function' ? target() : target
-    if (!targetElement) return
+	const handleClick = (event: MouseEvent) => {
+		if (!isActive.value) return;
+		if (shouldIgnore(event)) return;
 
-    if (!targetElement.contains(event.target as HTMLElement)) {
-      callback(event)
-    }
-  }
+		const targetElement = typeof target === "function" ? target() : target;
+		if (!targetElement) return;
 
-  const activate = () => {
-    isActive.value = true
-  }
+		if (!targetElement.contains(event.target as HTMLElement)) {
+			callback(event);
+		}
+	};
 
-  const deactivate = () => {
-    isActive.value = false
-  }
+	const activate = () => {
+		isActive.value = true;
+	};
 
-  const stop = () => {
-    document.removeEventListener('click', handleClick, { capture } as any)
-  }
+	const deactivate = () => {
+		isActive.value = false;
+	};
 
-  // Initialize immediately so unit tests (without mounting) can still work
-  document.addEventListener('click', handleClick, { capture })
+	const stop = () => {
+		document.removeEventListener("click", handleClick, { capture } as any);
+	};
 
-  onMounted(() => {
-    // no-op: already attached
-  })
+	// Initialize immediately so unit tests (without mounting) can still work
+	document.addEventListener("click", handleClick, { capture });
 
-  onUnmounted(() => {
-    stop()
-  })
+	onMounted(() => {
+		// no-op: already attached
+	});
 
-  return {
-    isActive,
-    activate,
-    deactivate,
-    stop,
-  }
+	onUnmounted(() => {
+		stop();
+	});
+
+	return {
+		isActive,
+		activate,
+		deactivate,
+		stop,
+	};
 }

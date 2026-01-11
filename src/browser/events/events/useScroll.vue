@@ -11,11 +11,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useScroll } from '../useScroll'
+import { ref } from "vue";
+import { useScroll } from "../useScroll";
 
-const scrollContainer = ref(null)
-const { x, y, isScrolling } = useScroll(scrollContainer)
+const scrollContainer = ref(null);
+const { x, y, isScrolling } = useScroll(scrollContainer);
 </script>
 
 <style scoped>

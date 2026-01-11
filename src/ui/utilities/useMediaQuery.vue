@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useMediaQuery } from './useMediaQuery'
+import { useMediaQuery } from "./useMediaQuery";
 
-const isLargeScreen = useMediaQuery('(min-width: 1024px)')
-const isDark = useMediaQuery('(prefers-color-scheme: dark)')
+const _isLargeScreen = useMediaQuery("(min-width: 1024px)");
+const _isDark = useMediaQuery("(prefers-color-scheme: dark)");
 </script>
 
 <template>

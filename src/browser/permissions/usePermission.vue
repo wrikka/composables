@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { usePermission } from './usePermission'
+import { usePermission } from "./usePermission";
 
-const { state: cameraStatus, queryPermission } = usePermission('camera')
+const { state: cameraStatus, queryPermission } = usePermission("camera");
 </script>
 
 <template>

@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useTimeoutFn } from './useTimeoutFn'
+import { ref } from "vue";
+import { useTimeoutFn } from "./useTimeoutFn";
 
-const status = ref('Not started')
+const status = ref("Not started");
 
-const { start, stop } = useTimeoutFn(() => {
-  status.value = 'Fired!'
-}, 2000, { immediate: false })
+const { start, stop } = useTimeoutFn(
+	() => {
+		status.value = "Fired!";
+	},
+	2000,
+	{ immediate: false },
+);
 
-const startTimer = () => {
-  status.value = 'Pending...'
-  start()
-}
+const _startTimer = () => {
+	status.value = "Pending...";
+	start();
+};
 </script>
 
 <template>

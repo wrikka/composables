@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useDeviceOrientation } from './useDeviceOrientation'
+import { useDeviceOrientation } from "./useDeviceOrientation";
 
-const { isSupported, orientation, error, requestPermission } = useDeviceOrientation()
+const { isSupported, orientation, error, requestPermission } =
+	useDeviceOrientation();
 </script>
 
 <template>

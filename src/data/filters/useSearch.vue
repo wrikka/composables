@@ -12,15 +12,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useSearch } from '../useSearch'
+import { ref } from "vue";
+import { useSearch } from "../useSearch";
 
 const data = ref([
-  { id: 1, name: 'Laptop', category: 'Electronics' },
-  { id: 2, name: 'Book', category: 'Stationery' },
-  { id: 3, name: 'Smartphone', category: 'Electronics' },
-  { id: 4, name: 'Desk Chair', category: 'Furniture' },
-])
+	{ id: 1, name: "Laptop", category: "Electronics" },
+	{ id: 2, name: "Book", category: "Stationery" },
+	{ id: 3, name: "Smartphone", category: "Electronics" },
+	{ id: 4, name: "Desk Chair", category: "Furniture" },
+]);
 
-const { searchResults, searchTerm } = useSearch(data, ['name', 'category'])
+const { searchResults, searchTerm } = useSearch(data, ["name", "category"]);
 </script>

@@ -8,9 +8,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useBase64 } from '../useBase64'
+import { ref } from "vue";
+import { useBase64 } from "../useBase64";
 
-const text = ref('Hello, wcomposables!')
-const { encoded, decoded } = useBase64(text)
+const text = ref("Hello, wcomposables!");
+const { encoded, decoded } = useBase64(text);
 </script>

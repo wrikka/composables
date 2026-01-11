@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useHash } from './useHash';
+import { useHash } from "./useHash";
 
-const hash = useHash();
+const _hash = useHash();
 </script>
 
 <template>

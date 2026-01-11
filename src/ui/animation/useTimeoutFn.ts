@@ -1,59 +1,59 @@
-import { ref, onUnmounted, type Ref } from 'vue'
+import { onUnmounted, type Ref, ref } from "vue";
 
 export interface UseTimeoutFnOptions {
-  immediate?: boolean
+	immediate?: boolean;
 }
 
 export interface UseTimeoutFnReturn {
-  isPending: Ref<boolean>
-  start: (...args: any[]) => void
-  stop: () => void
+	isPending: Ref<boolean>;
+	start: (...args: any[]) => void;
+	stop: () => void;
 }
 
 export function useTimeoutFn(
-  callback: (...args: any[]) => any,
-  delay: number,
-  options: UseTimeoutFnOptions = {}
+	callback: (...args: any[]) => any,
+	delay: number,
+	options: UseTimeoutFnOptions = {},
 ) {
-  const { immediate = false } = options
-  
-  const isPending = ref(false)
-  let timeoutId: NodeJS.Timeout | null = null
+	const { immediate = false } = options;
 
-  const clear = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-      timeoutId = null
-    }
-    isPending.value = false
-  }
+	const isPending = ref(false);
+	let timeoutId: NodeJS.Timeout | null = null;
 
-  const start = (...args: any[]) => {
-    clear()
-    isPending.value = true
-    
-    timeoutId = setTimeout(() => {
-      isPending.value = false
-      timeoutId = null
-      callback(...args)
-    }, delay)
-  }
+	const clear = () => {
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+			timeoutId = null;
+		}
+		isPending.value = false;
+	};
 
-  const stop = () => {
-    clear()
-  }
+	const start = (...args: any[]) => {
+		clear();
+		isPending.value = true;
 
-  if (immediate) {
-    start()
-  }
+		timeoutId = setTimeout(() => {
+			isPending.value = false;
+			timeoutId = null;
+			callback(...args);
+		}, delay);
+	};
 
-  onUnmounted(() => {
-    clear()
-  })
+	const stop = () => {
+		clear();
+	};
 
-  return {
-    isPending,
-    start,
-    stop
-  }
+	if (immediate) {
+		start();
+	}
+
+	onUnmounted(() => {
+		clear();
+	});
+
+	return {
+		isPending,
+		start,
+		stop,
+	};
 }

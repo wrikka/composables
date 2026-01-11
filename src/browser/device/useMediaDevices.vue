@@ -1,35 +1,36 @@
 <script setup lang="ts">
-import { ref, onMounted, type Ref } from 'vue'
-import { useMediaDevices } from './useMediaDevices'
+import { onMounted, type Ref, ref } from "vue";
+import { useMediaDevices } from "./useMediaDevices";
 
-const videoRef: Ref<HTMLVideoElement | null> = ref(null)
-const stream = ref<MediaStream | null>(null)
-const { isSupported, devices, getStream, requestPermissions } = useMediaDevices()
+const videoRef: Ref<HTMLVideoElement | null> = ref(null);
+const stream = ref<MediaStream | null>(null);
+const { isSupported, devices, getStream, requestPermissions } =
+	useMediaDevices();
 
-const startStream = async () => {
-  const mediaStream = await getStream()
-  if (mediaStream) {
-    stream.value = mediaStream
-    if (videoRef.value) {
-      videoRef.value.srcObject = mediaStream
-    }
-  }
-}
+const _startStream = async () => {
+	const mediaStream = await getStream();
+	if (mediaStream) {
+		stream.value = mediaStream;
+		if (videoRef.value) {
+			videoRef.value.srcObject = mediaStream;
+		}
+	}
+};
 
-const stopStream = () => {
-  if (stream.value) {
-    stream.value.getTracks().forEach(track => track.stop())
-    stream.value = null
-  }
-  if (videoRef.value) {
-    videoRef.value.srcObject = null
-  }
-}
+const _stopStream = () => {
+	if (stream.value) {
+		stream.value.getTracks().forEach((track) => track.stop());
+		stream.value = null;
+	}
+	if (videoRef.value) {
+		videoRef.value.srcObject = null;
+	}
+};
 
 // Request permissions on mount to get device labels
 onMounted(async () => {
-  await requestPermissions()
-})
+	await requestPermissions();
+});
 </script>
 
 <template>

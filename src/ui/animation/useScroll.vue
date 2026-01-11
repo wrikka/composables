@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useScroll } from './useScroll'
+import { ref } from "vue";
+import { useScroll } from "./useScroll";
 
-const el = ref<HTMLElement | null>(null)
-const { x, y, isScrolling, arrivedState } = useScroll(el)
+const el = ref<HTMLElement | null>(null);
+const { x, y, isScrolling, arrivedState } = useScroll(el);
 </script>
 
 <template>

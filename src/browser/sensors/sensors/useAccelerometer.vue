@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { useAccelerometer } from './useAccelerometer'
+import { useAccelerometer } from "./useAccelerometer";
 
-const { isSupported, x, y, z } = useAccelerometer()
+const { isSupported, x, y, z } = useAccelerometer();
 </script>

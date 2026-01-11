@@ -1,145 +1,147 @@
-import { ref, watch, onUnmounted, type Ref } from 'vue'
+import { onUnmounted, type Ref, ref, watch } from "vue";
 
 export interface UseThrottleOptions {
-  delay?: number
-  leading?: boolean
-  trailing?: boolean
+	delay?: number;
+	leading?: boolean;
+	trailing?: boolean;
 }
 
 export function useThrottle<T>(
-  source: Ref<T> | (() => T),
-  callback: (value: T) => void,
-  options: UseThrottleOptions = {}
+	source: Ref<T> | (() => T),
+	callback: (value: T) => void,
+	options: UseThrottleOptions = {},
 ): { throttledValue: Ref<T>; flush: () => void; cancel: () => void } {
-  const {
-    delay = 300,
-    leading = true,
-    trailing = true
-  } = options
+	const { delay = 300, leading = true, trailing = true } = options;
 
-  const throttledValue = ref<T>(typeof source === 'function' ? source() : source.value)
-  let timeoutId: NodeJS.Timeout | null = null
-  let lastCallTime = 0
-  let lastInvokeTime = 0
+	const throttledValue = ref<T>(
+		typeof source === "function" ? source() : source.value,
+	);
+	let timeoutId: NodeJS.Timeout | null = null;
+	let lastCallTime = 0;
+	let lastInvokeTime = 0;
 
-  const invokeFunc = (value: T) => {
-    callback(value)
-    throttledValue.value = value
-  }
+	const invokeFunc = (value: T) => {
+		callback(value);
+		throttledValue.value = value;
+	};
 
-  const shouldInvoke = (time: number) => {
-    const timeSinceLastCall = time - lastCallTime
-    const timeSinceLastInvoke = time - lastInvokeTime
-    
-    return (
-      lastCallTime === 0 ||
-      timeSinceLastCall >= delay ||
-      timeSinceLastCall < 0 ||
-      (leading && timeSinceLastInvoke >= delay)
-    )
-  }
+	const shouldInvoke = (time: number) => {
+		const timeSinceLastCall = time - lastCallTime;
+		const timeSinceLastInvoke = time - lastInvokeTime;
 
-  const trailingEdge = (time: number, value: T) => {
-    timeoutId = null
-    
-    if (trailing && lastCallTime) {
-      invokeFunc(value)
-    }
-    
-    lastCallTime = 0
-    lastInvokeTime = time
-  }
+		return (
+			lastCallTime === 0 ||
+			timeSinceLastCall >= delay ||
+			timeSinceLastCall < 0 ||
+			(leading && timeSinceLastInvoke >= delay)
+		);
+	};
 
-  const leadingEdge = (time: number, value: T) => {
-    lastCallTime = time
-    lastInvokeTime = time
-    
-    if (leading) {
-      invokeFunc(value)
-    }
-    
-    timeoutId = setTimeout(() => {
-      trailingEdge(Date.now(), value)
-    }, delay)
-  }
+	const trailingEdge = (time: number, value: T) => {
+		timeoutId = null;
 
-  const remainingWait = (time: number) => {
-    const timeSinceLastCall = time - lastCallTime
-    return Math.max(delay - timeSinceLastCall, 0)
-  }
+		if (trailing && lastCallTime) {
+			invokeFunc(value);
+		}
 
-  const timerExpired = (value: T) => {
-    const time = Date.now()
-    
-    if (shouldInvoke(time)) {
-      trailingEdge(time, value)
-    } else {
-      timeoutId = setTimeout(() => {
-        timerExpired(value)
-      }, remainingWait(time))
-    }
-  }
+		lastCallTime = 0;
+		lastInvokeTime = time;
+	};
 
-  const clear = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-      timeoutId = null
-    }
-  }
+	const leadingEdge = (time: number, value: T) => {
+		lastCallTime = time;
+		lastInvokeTime = time;
 
-  const flush = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-      timeoutId = null
-    }
-    const currentValue = typeof source === 'function' ? source() : source.value
-    if (lastCallTime) {
-      invokeFunc(currentValue)
-    }
-    lastCallTime = 0
-    lastInvokeTime = 0
-  }
+		if (leading) {
+			invokeFunc(value);
+		}
 
-  const cancel = () => {
-    clear()
-    lastCallTime = 0
-    lastInvokeTime = 0
-  }
+		timeoutId = setTimeout(() => {
+			trailingEdge(Date.now(), value);
+		}, delay);
+	};
 
-  const throttledFn = (value: T) => {
-    const time = Date.now()
-    const isInvoking = shouldInvoke(time)
+	const remainingWait = (time: number) => {
+		const timeSinceLastCall = time - lastCallTime;
+		return Math.max(delay - timeSinceLastCall, 0);
+	};
 
-    lastCallTime = time
+	const timerExpired = (value: T) => {
+		const time = Date.now();
 
-    if (isInvoking) {
-      if (timeoutId === null) {
-        leadingEdge(time, value)
-      } else {
-        timeoutId = setTimeout(() => {
-          timerExpired(value)
-        }, remainingWait(time))
-      }
-    } else if (!timeoutId && trailing) {
-      timeoutId = setTimeout(() => {
-        timerExpired(value)
-      }, delay)
-    }
-  }
+		if (shouldInvoke(time)) {
+			trailingEdge(time, value);
+		} else {
+			timeoutId = setTimeout(() => {
+				timerExpired(value);
+			}, remainingWait(time));
+		}
+	};
 
-  if (typeof source === 'object' && 'value' in source) {
-    watch(source, (newValue) => {
-      throttledFn(newValue)
-    }, { immediate: leading })
-  }
+	const clear = () => {
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+			timeoutId = null;
+		}
+	};
 
-  onUnmounted(() => {
-    clear()
-  })
+	const flush = () => {
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+			timeoutId = null;
+		}
+		const currentValue = typeof source === "function" ? source() : source.value;
+		if (lastCallTime) {
+			invokeFunc(currentValue);
+		}
+		lastCallTime = 0;
+		lastInvokeTime = 0;
+	};
 
-  return {
-    throttledValue: ref(throttledValue.value) as Ref<T>,
-    flush,
-    cancel
-  }
+	const cancel = () => {
+		clear();
+		lastCallTime = 0;
+		lastInvokeTime = 0;
+	};
+
+	const throttledFn = (value: T) => {
+		const time = Date.now();
+		const isInvoking = shouldInvoke(time);
+
+		lastCallTime = time;
+
+		if (isInvoking) {
+			if (timeoutId === null) {
+				leadingEdge(time, value);
+			} else {
+				timeoutId = setTimeout(() => {
+					timerExpired(value);
+				}, remainingWait(time));
+			}
+		} else if (!timeoutId && trailing) {
+			timeoutId = setTimeout(() => {
+				timerExpired(value);
+			}, delay);
+		}
+	};
+
+	if (typeof source === "object" && "value" in source) {
+		watch(
+			source,
+			(newValue) => {
+				throttledFn(newValue);
+			},
+			{ immediate: leading },
+		);
+	}
+
+	onUnmounted(() => {
+		clear();
+	});
+
+	return {
+		throttledValue: ref(throttledValue.value) as Ref<T>,
+		flush,
+		cancel,
+	};
 }

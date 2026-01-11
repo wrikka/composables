@@ -19,20 +19,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { usePagination } from '../usePagination'
+import { ref } from "vue";
+import { usePagination } from "../usePagination";
 
 const list = ref(
-  Array.from({ length: 50 }, (_, i) => ({ id: i + 1, name: `Item ${i + 1}` }))
-)
+	Array.from({ length: 50 }, (_, i) => ({ id: i + 1, name: `Item ${i + 1}` })),
+);
 
-const { 
-  currentPage, 
-  pageCount, 
-  isFirstPage, 
-  isLastPage, 
-  paginatedList, 
-  next, 
-  prev 
-} = usePagination(list, { pageSize: 5 })
+const {
+	currentPage,
+	pageCount,
+	isFirstPage,
+	isLastPage,
+	paginatedList,
+	next,
+	prev,
+} = usePagination(list, { pageSize: 5 });
 </script>

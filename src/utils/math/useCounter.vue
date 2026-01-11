@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import { useCounter } from './useCounter'
+import { useCounter } from "./useCounter";
 
-const { count, inc, dec, set, reset } = useCounter(0)
+const { count, inc, dec, set, reset } = useCounter(0);
 </script>

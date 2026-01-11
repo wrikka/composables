@@ -1,7 +1,7 @@
-import type { Ref } from 'vue'
+import type { Ref } from "vue";
 
 export interface UseStorageReturn<T> {
-  value: Ref<T>
-  remove: () => void
-  clear: () => void
+	value: Ref<T>;
+	remove: () => void;
+	clear: () => void;
 }

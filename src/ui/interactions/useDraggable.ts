@@ -1,231 +1,238 @@
-import { ref, onMounted, onUnmounted, type Ref } from 'vue'
+import { onMounted, onUnmounted, type Ref, ref } from "vue";
 
 export interface Position {
-  x: number
-  y: number
+	x: number;
+	y: number;
 }
 
 export interface UseDraggableOptions {
-  initialValue?: Position
-  handle?: string
-  axis?: 'x' | 'y' | 'both'
-  bounds?: {
-    left?: number
-    top?: number
-    right?: number
-    bottom?: number
-  }
-  container?: HTMLElement
-  onStart?: (position: Position) => void
-  onMove?: (position: Position) => void
-  onEnd?: (position: Position) => void
+	initialValue?: Position;
+	handle?: string;
+	axis?: "x" | "y" | "both";
+	bounds?: {
+		left?: number;
+		top?: number;
+		right?: number;
+		bottom?: number;
+	};
+	container?: HTMLElement;
+	onStart?: (position: Position) => void;
+	onMove?: (position: Position) => void;
+	onEnd?: (position: Position) => void;
 }
 
-export function useDraggable(targetRef: Ref<HTMLElement | null>, options: UseDraggableOptions = {}) {
-  const {
-    initialValue = { x: 0, y: 0 },
-    handle,
-    axis = 'both',
-    bounds,
-    container,
-    onStart,
-    onMove,
-    onEnd
-  } = options
+export function useDraggable(
+	targetRef: Ref<HTMLElement | null>,
+	options: UseDraggableOptions = {},
+) {
+	const {
+		initialValue = { x: 0, y: 0 },
+		handle,
+		axis = "both",
+		bounds,
+		container,
+		onStart,
+		onMove,
+		onEnd,
+	} = options;
 
-  const position = ref({ ...initialValue })
-  const isDragging = ref(false)
-  const startPosition = ref({ ...initialValue })
-  const mousePosition = ref({ x: 0, y: 0 })
+	const position = ref({ ...initialValue });
+	const isDragging = ref(false);
+	const startPosition = ref({ ...initialValue });
+	const mousePosition = ref({ x: 0, y: 0 });
 
-  const isWithinBounds = (x: number, y: number): boolean => {
-    if (!bounds) return true
+	const isWithinBounds = (x: number, y: number): boolean => {
+		if (!bounds) return true;
 
-    const containerBounds = container ? container.getBoundingClientRect() : null
-    const targetBounds = targetRef.value?.getBoundingClientRect()
+		const containerBounds = container
+			? container.getBoundingClientRect()
+			: null;
+		const targetBounds = targetRef.value?.getBoundingClientRect();
 
-    let minX = bounds.left ?? -Infinity
-    let maxX = bounds.right ?? Infinity
-    let minY = bounds.top ?? -Infinity
-    let maxY = bounds.bottom ?? Infinity
+		let minX = bounds.left ?? -Infinity;
+		let maxX = bounds.right ?? Infinity;
+		let minY = bounds.top ?? -Infinity;
+		let maxY = bounds.bottom ?? Infinity;
 
-    if (container && targetBounds && containerBounds) {
-      minX = Math.max(minX, 0)
-      maxX = Math.min(maxX, containerBounds.width - targetBounds.width)
-      minY = Math.max(minY, 0)
-      maxY = Math.min(maxY, containerBounds.height - targetBounds.height)
-    }
+		if (container && targetBounds && containerBounds) {
+			minX = Math.max(minX, 0);
+			maxX = Math.min(maxX, containerBounds.width - targetBounds.width);
+			minY = Math.max(minY, 0);
+			maxY = Math.min(maxY, containerBounds.height - targetBounds.height);
+		}
 
-    return x >= minX && x <= maxX && y >= minY && y <= maxY
-  }
+		return x >= minX && x <= maxX && y >= minY && y <= maxY;
+	};
 
-  const clampPosition = (x: number, y: number): Position => {
-    if (!bounds) return { x, y }
+	const clampPosition = (x: number, y: number): Position => {
+		if (!bounds) return { x, y };
 
-    const containerBounds = container ? container.getBoundingClientRect() : null
-    const targetBounds = targetRef.value?.getBoundingClientRect()
+		const containerBounds = container
+			? container.getBoundingClientRect()
+			: null;
+		const targetBounds = targetRef.value?.getBoundingClientRect();
 
-    let minX = bounds.left ?? -Infinity
-    let maxX = bounds.right ?? Infinity
-    let minY = bounds.top ?? -Infinity
-    let maxY = bounds.bottom ?? Infinity
+		let minX = bounds.left ?? -Infinity;
+		let maxX = bounds.right ?? Infinity;
+		let minY = bounds.top ?? -Infinity;
+		let maxY = bounds.bottom ?? Infinity;
 
-    if (container && targetBounds && containerBounds) {
-      minX = Math.max(minX, 0)
-      maxX = Math.min(maxX, containerBounds.width - targetBounds.width)
-      minY = Math.max(minY, 0)
-      maxY = Math.min(maxY, containerBounds.height - targetBounds.height)
-    }
+		if (container && targetBounds && containerBounds) {
+			minX = Math.max(minX, 0);
+			maxX = Math.min(maxX, containerBounds.width - targetBounds.width);
+			minY = Math.max(minY, 0);
+			maxY = Math.min(maxY, containerBounds.height - targetBounds.height);
+		}
 
-    return {
-      x: Math.max(minX, Math.min(maxX, x)),
-      y: Math.max(minY, Math.min(maxY, y))
-    }
-  }
+		return {
+			x: Math.max(minX, Math.min(maxX, x)),
+			y: Math.max(minY, Math.min(maxY, y)),
+		};
+	};
 
-  const handleMouseDown = (event: MouseEvent) => {
-    if (!targetRef.value) return
+	const handleMouseDown = (event: MouseEvent) => {
+		if (!targetRef.value) return;
 
-    const target = event.target as HTMLElement
-    if (handle && !target.closest(handle)) return
+		const target = event.target as HTMLElement;
+		if (handle && !target.closest(handle)) return;
 
-    event.preventDefault()
+		event.preventDefault();
 
-    isDragging.value = true
-    startPosition.value = { ...position.value }
-    mousePosition.value = { x: event.clientX, y: event.clientY }
+		isDragging.value = true;
+		startPosition.value = { ...position.value };
+		mousePosition.value = { x: event.clientX, y: event.clientY };
 
-    onStart?.(position.value)
+		onStart?.(position.value);
 
-    document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseup', handleMouseUp)
-  }
+		document.addEventListener("mousemove", handleMouseMove);
+		document.addEventListener("mouseup", handleMouseUp);
+	};
 
-  const handleMouseMove = (event: MouseEvent) => {
-    if (!isDragging.value) return
+	const handleMouseMove = (event: MouseEvent) => {
+		if (!isDragging.value) return;
 
-    const deltaX = event.clientX - mousePosition.value.x
-    const deltaY = event.clientY - mousePosition.value.y
+		const deltaX = event.clientX - mousePosition.value.x;
+		const deltaY = event.clientY - mousePosition.value.y;
 
-    let newX = startPosition.value.x
-    let newY = startPosition.value.y
+		let newX = startPosition.value.x;
+		let newY = startPosition.value.y;
 
-    if (axis === 'x' || axis === 'both') {
-      newX += deltaX
-    }
-    if (axis === 'y' || axis === 'both') {
-      newY += deltaY
-    }
+		if (axis === "x" || axis === "both") {
+			newX += deltaX;
+		}
+		if (axis === "y" || axis === "both") {
+			newY += deltaY;
+		}
 
-    const clampedPosition = clampPosition(newX, newY)
+		const clampedPosition = clampPosition(newX, newY);
 
-    if (isWithinBounds(clampedPosition.x, clampedPosition.y)) {
-      position.value = clampedPosition
-      onMove?.(position.value)
-    }
-  }
+		if (isWithinBounds(clampedPosition.x, clampedPosition.y)) {
+			position.value = clampedPosition;
+			onMove?.(position.value);
+		}
+	};
 
-  const handleMouseUp = () => {
-    if (!isDragging.value) return
+	const handleMouseUp = () => {
+		if (!isDragging.value) return;
 
-    isDragging.value = false
-    onEnd?.(position.value)
+		isDragging.value = false;
+		onEnd?.(position.value);
 
-    document.removeEventListener('mousemove', handleMouseMove)
-    document.removeEventListener('mouseup', handleMouseUp)
-  }
+		document.removeEventListener("mousemove", handleMouseMove);
+		document.removeEventListener("mouseup", handleMouseUp);
+	};
 
-  const handleTouchStart = (event: TouchEvent) => {
-    if (!targetRef.value) return
+	const handleTouchStart = (event: TouchEvent) => {
+		if (!targetRef.value) return;
 
-    const target = event.target as HTMLElement
-    if (handle && !target.closest(handle)) return
+		const target = event.target as HTMLElement;
+		if (handle && !target.closest(handle)) return;
 
-    event.preventDefault()
+		event.preventDefault();
 
-    if (!event.touches || event.touches.length === 0) return
-    
-    const touch = event.touches[0]
-    if (!touch) return
-    isDragging.value = true
-    startPosition.value = { ...position.value }
-    mousePosition.value = { x: touch.clientX, y: touch.clientY }
+		if (!event.touches || event.touches.length === 0) return;
 
-    onStart?.(position.value)
+		const touch = event.touches[0];
+		if (!touch) return;
+		isDragging.value = true;
+		startPosition.value = { ...position.value };
+		mousePosition.value = { x: touch.clientX, y: touch.clientY };
 
-    document.addEventListener('touchmove', handleTouchMove)
-    document.addEventListener('touchend', handleTouchEnd)
-  }
+		onStart?.(position.value);
 
-  const handleTouchMove = (event: TouchEvent) => {
-    if (!isDragging.value) return
-    if (!event.touches || event.touches.length === 0) return
+		document.addEventListener("touchmove", handleTouchMove);
+		document.addEventListener("touchend", handleTouchEnd);
+	};
 
-    const touch = event.touches[0]
-    if (!touch) return
+	const handleTouchMove = (event: TouchEvent) => {
+		if (!isDragging.value) return;
+		if (!event.touches || event.touches.length === 0) return;
 
-    const deltaX = touch.clientX - mousePosition.value.x
-    const deltaY = touch.clientY - mousePosition.value.y
+		const touch = event.touches[0];
+		if (!touch) return;
 
-    let newX = startPosition.value.x
-    let newY = startPosition.value.y
+		const deltaX = touch.clientX - mousePosition.value.x;
+		const deltaY = touch.clientY - mousePosition.value.y;
 
-    if (axis === 'x' || axis === 'both') {
-      newX += deltaX
-    }
-    if (axis === 'y' || axis === 'both') {
-      newY += deltaY
-    }
+		let newX = startPosition.value.x;
+		let newY = startPosition.value.y;
 
-    const clampedPosition = clampPosition(newX, newY)
+		if (axis === "x" || axis === "both") {
+			newX += deltaX;
+		}
+		if (axis === "y" || axis === "both") {
+			newY += deltaY;
+		}
 
-    if (isWithinBounds(clampedPosition.x, clampedPosition.y)) {
-      position.value = clampedPosition
-      onMove?.(position.value)
-    }
-  }
+		const clampedPosition = clampPosition(newX, newY);
 
-  const handleTouchEnd = () => {
-    if (!isDragging.value) return
+		if (isWithinBounds(clampedPosition.x, clampedPosition.y)) {
+			position.value = clampedPosition;
+			onMove?.(position.value);
+		}
+	};
 
-    isDragging.value = false
-    onEnd?.(position.value)
+	const handleTouchEnd = () => {
+		if (!isDragging.value) return;
 
-    document.removeEventListener('touchmove', handleTouchMove)
-    document.removeEventListener('touchend', handleTouchEnd)
-  }
+		isDragging.value = false;
+		onEnd?.(position.value);
 
-  const reset = () => {
-    position.value = { ...initialValue }
-  }
+		document.removeEventListener("touchmove", handleTouchMove);
+		document.removeEventListener("touchend", handleTouchEnd);
+	};
 
-  const stop = () => {
-    isDragging.value = false
-    document.removeEventListener('mousemove', handleMouseMove)
-    document.removeEventListener('mouseup', handleMouseUp)
-    document.removeEventListener('touchmove', handleTouchMove)
-    document.removeEventListener('touchend', handleTouchEnd)
-  }
+	const reset = () => {
+		position.value = { ...initialValue };
+	};
 
-  onMounted(() => {
-    if (targetRef.value) {
-      targetRef.value.addEventListener('mousedown', handleMouseDown)
-      targetRef.value.addEventListener('touchstart', handleTouchStart)
-    }
-  })
+	const stop = () => {
+		isDragging.value = false;
+		document.removeEventListener("mousemove", handleMouseMove);
+		document.removeEventListener("mouseup", handleMouseUp);
+		document.removeEventListener("touchmove", handleTouchMove);
+		document.removeEventListener("touchend", handleTouchEnd);
+	};
 
-  onUnmounted(() => {
-    stop()
-    if (targetRef.value) {
-      targetRef.value.removeEventListener('mousedown', handleMouseDown)
-      targetRef.value.removeEventListener('touchstart', handleTouchStart)
-    }
-  })
+	onMounted(() => {
+		if (targetRef.value) {
+			targetRef.value.addEventListener("mousedown", handleMouseDown);
+			targetRef.value.addEventListener("touchstart", handleTouchStart);
+		}
+	});
 
-  return {
-    position,
-    isDragging,
-    reset,
-    stop
-  }
+	onUnmounted(() => {
+		stop();
+		if (targetRef.value) {
+			targetRef.value.removeEventListener("mousedown", handleMouseDown);
+			targetRef.value.removeEventListener("touchstart", handleTouchStart);
+		}
+	});
+
+	return {
+		position,
+		isDragging,
+		reset,
+		stop,
+	};
 }

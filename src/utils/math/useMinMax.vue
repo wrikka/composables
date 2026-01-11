@@ -10,17 +10,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useMinMax } from './useMinMax'
+import { ref } from "vue";
+import { useMinMax } from "./useMinMax";
 
-const numbers = ref([10, 2, 8, 4, 6])
-const newNumber = ref(0)
-const { min, max } = useMinMax(numbers)
+const numbers = ref([10, 2, 8, 4, 6]);
+const newNumber = ref(0);
+const { min, max } = useMinMax(numbers);
 
-const addNumber = () => {
-  if (typeof newNumber.value === 'number') {
-    numbers.value.push(newNumber.value)
-    newNumber.value = 0
-  }
-}
+const _addNumber = () => {
+	if (typeof newNumber.value === "number") {
+		numbers.value.push(newNumber.value);
+		newNumber.value = 0;
+	}
+};
 </script>

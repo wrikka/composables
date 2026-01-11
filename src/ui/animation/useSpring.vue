@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useSpring } from './useSpring'
+import { ref } from "vue";
+import { useSpring } from "./useSpring";
 
-const target = ref(0)
-const value = useSpring(target, { stiffness: 100, damping: 20 })
+const target = ref(0);
+const _value = useSpring(target, { stiffness: 100, damping: 20 });
 </script>
 
 <template>

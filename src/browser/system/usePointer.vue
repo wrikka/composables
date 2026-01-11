@@ -9,11 +9,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { usePointer } from '../usePointer'
+import { ref } from "vue";
+import { usePointer } from "../usePointer";
 
-const target = ref(null)
-const { x, y, pointerType, pressure } = usePointer({ target })
+const target = ref(null);
+const { x, y, pointerType, pressure } = usePointer({ target });
 </script>
 
 <style scoped>

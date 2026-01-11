@@ -1,24 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useSelection } from './useSelection'
+import { ref } from "vue";
+import { useSelection } from "./useSelection";
 
 const data = ref([
-  { id: 1, name: 'Alice' },
-  { id: 2, name: 'Bob' },
-  { id: 3, name: 'Charlie' },
-  { id: 4, name: 'David' },
-])
+	{ id: 1, name: "Alice" },
+	{ id: 2, name: "Bob" },
+	{ id: 3, name: "Charlie" },
+	{ id: 4, name: "David" },
+]);
 
-const { 
-  selectedItems, 
-  allSelected, 
-  someSelected, 
-  isSelected, 
-  toggleSelection 
-} = useSelection(data, 'id')
+const {
+	selectedItems,
+	allSelected,
+	someSelected,
+	isSelected,
+	toggleSelection,
+} = useSelection(data, "id");
 
-const indeterminate = someSelected
-
+const _indeterminate = someSelected;
 </script>
 
 <template>

@@ -12,16 +12,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useFilter } from '../useFilter'
+import { ref } from "vue";
+import { useFilter } from "../useFilter";
 
 const list = ref([
-  { id: 1, name: 'Apple' },
-  { id: 2, name: 'Banana' },
-  { id: 3, name: 'Orange' },
-  { id: 4, name: 'Pineapple' },
-  { id: 5, name: 'Grape' },
-])
+	{ id: 1, name: "Apple" },
+	{ id: 2, name: "Banana" },
+	{ id: 3, name: "Orange" },
+	{ id: 4, name: "Pineapple" },
+	{ id: 5, name: "Grape" },
+]);
 
-const { filteredList, searchTerm } = useFilter(list, 'name')
+const { filteredList, searchTerm } = useFilter(list, "name");
 </script>

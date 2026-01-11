@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useLanguage } from './useLanguage'
+import { useLanguage } from "./useLanguage";
 
-const { language } = useLanguage()
+const { language } = useLanguage();
 </script>
 
 <template>

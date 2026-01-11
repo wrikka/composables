@@ -1,122 +1,122 @@
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
-import type { UseMouseOptions } from './useMouse'
-import { useMouse } from './useMouse'
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import type { UseMouseOptions } from "./useMouse";
+import { useMouse } from "./useMouse";
 
 export interface CursorPosition {
-  x: number
-  y: number
+	x: number;
+	y: number;
 }
 
 export interface UseCursorOptions extends UseMouseOptions {
-  cursorStyle?: string
-  hotspot?: { x: number; y: number }
-  followCursor?: boolean
-  delay?: number
+	cursorStyle?: string;
+	hotspot?: { x: number; y: number };
+	followCursor?: boolean;
+	delay?: number;
 }
 
 export function useCursor(options: UseCursorOptions = {}) {
-  const {
-    cursorStyle = 'default',
-    hotspot = { x: 0, y: 0 },
-    followCursor = true,
-    delay = 0
-  } = options
+	const {
+		cursorStyle = "default",
+		hotspot = { x: 0, y: 0 },
+		followCursor = true,
+		delay = 0,
+	} = options;
 
-  const { x, y } = useMouse(options)
-  
-  const cursorX = ref(0)
-  const cursorY = ref(0)
-  const cursorStyleRef = ref(cursorStyle)
-  const isVisible = ref(true)
-  const isPressed = ref(false)
+	const { x, y } = useMouse(options);
 
-  const position = computed(() => ({ x: cursorX.value, y: cursorY.value }))
+	const cursorX = ref(0);
+	const cursorY = ref(0);
+	const cursorStyleRef = ref(cursorStyle);
+	const isVisible = ref(true);
+	const isPressed = ref(false);
 
-  let timeoutId: NodeJS.Timeout | null = null
+	const position = computed(() => ({ x: cursorX.value, y: cursorY.value }));
 
-  const updateCursor = (newX: number, newY: number) => {
-    if (delay > 0) {
-      if (timeoutId) clearTimeout(timeoutId)
-      timeoutId = setTimeout(() => {
-        cursorX.value = newX
-        cursorY.value = newY
-      }, delay)
-    } else {
-      cursorX.value = newX
-      cursorY.value = newY
-    }
-  }
+	let timeoutId: NodeJS.Timeout | null = null;
 
-  const setCursorStyle = (style: string) => {
-    cursorStyleRef.value = style
-    document.body.style.cursor = style
-  }
+	const updateCursor = (newX: number, newY: number) => {
+		if (delay > 0) {
+			if (timeoutId) clearTimeout(timeoutId);
+			timeoutId = setTimeout(() => {
+				cursorX.value = newX;
+				cursorY.value = newY;
+			}, delay);
+		} else {
+			cursorX.value = newX;
+			cursorY.value = newY;
+		}
+	};
 
-  const hideCursor = () => {
-    isVisible.value = false
-    document.body.style.cursor = 'none'
-  }
+	const setCursorStyle = (style: string) => {
+		cursorStyleRef.value = style;
+		document.body.style.cursor = style;
+	};
 
-  const showCursor = () => {
-    isVisible.value = true
-    document.body.style.cursor = cursorStyleRef.value
-  }
+	const hideCursor = () => {
+		isVisible.value = false;
+		document.body.style.cursor = "none";
+	};
 
-  const setHotspot = (x: number, y: number) => {
-    hotspot.x = x
-    hotspot.y = y
-  }
+	const showCursor = () => {
+		isVisible.value = true;
+		document.body.style.cursor = cursorStyleRef.value;
+	};
 
-  watch([x, y], ([newX, newY]) => {
-    if (followCursor) {
-      updateCursor(newX, newY)
-    }
-  })
+	const setHotspot = (x: number, y: number) => {
+		hotspot.x = x;
+		hotspot.y = y;
+	};
 
-  const handleMouseDown = () => {
-    isPressed.value = true
-  }
+	watch([x, y], ([newX, newY]) => {
+		if (followCursor) {
+			updateCursor(newX, newY);
+		}
+	});
 
-  const handleMouseUp = () => {
-    isPressed.value = false
-  }
+	const handleMouseDown = () => {
+		isPressed.value = true;
+	};
 
-  const handleMouseEnter = () => {
-    showCursor()
-  }
+	const handleMouseUp = () => {
+		isPressed.value = false;
+	};
 
-  const handleMouseLeave = () => {
-    hideCursor()
-  }
+	const handleMouseEnter = () => {
+		showCursor();
+	};
 
-  onMounted(() => {
-    document.addEventListener('mousedown', handleMouseDown)
-    document.addEventListener('mouseup', handleMouseUp)
-    document.addEventListener('mouseenter', handleMouseEnter)
-    document.addEventListener('mouseleave', handleMouseLeave)
-    setCursorStyle(cursorStyle)
-  })
+	const handleMouseLeave = () => {
+		hideCursor();
+	};
 
-  onUnmounted(() => {
-    document.removeEventListener('mousedown', handleMouseDown)
-    document.removeEventListener('mouseup', handleMouseUp)
-    document.removeEventListener('mouseenter', handleMouseEnter)
-    document.removeEventListener('mouseleave', handleMouseLeave)
-    document.body.style.cursor = ''
-    if (timeoutId) clearTimeout(timeoutId)
-  })
+	onMounted(() => {
+		document.addEventListener("mousedown", handleMouseDown);
+		document.addEventListener("mouseup", handleMouseUp);
+		document.addEventListener("mouseenter", handleMouseEnter);
+		document.addEventListener("mouseleave", handleMouseLeave);
+		setCursorStyle(cursorStyle);
+	});
 
-  return {
-    x: cursorX,
-    y: cursorY,
-    position,
-    style: cursorStyleRef,
-    isVisible,
-    isPressed,
-    hotspot,
-    setCursorStyle,
-    hideCursor,
-    showCursor,
-    setHotspot
-  }
+	onUnmounted(() => {
+		document.removeEventListener("mousedown", handleMouseDown);
+		document.removeEventListener("mouseup", handleMouseUp);
+		document.removeEventListener("mouseenter", handleMouseEnter);
+		document.removeEventListener("mouseleave", handleMouseLeave);
+		document.body.style.cursor = "";
+		if (timeoutId) clearTimeout(timeoutId);
+	});
+
+	return {
+		x: cursorX,
+		y: cursorY,
+		position,
+		style: cursorStyleRef,
+		isVisible,
+		isPressed,
+		hotspot,
+		setCursorStyle,
+		hideCursor,
+		showCursor,
+		setHotspot,
+	};
 }

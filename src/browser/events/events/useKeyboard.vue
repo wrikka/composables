@@ -13,11 +13,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useKeyboard } from '../useKeyboard'
+import { ref } from "vue";
+import { useKeyboard } from "../useKeyboard";
 
-const lastKey = ref('')
+const lastKey = ref("");
 const { ctrl, shift, alt } = useKeyboard((event) => {
-  lastKey.value = event.key
-})
+	lastKey.value = event.key;
+});
 </script>

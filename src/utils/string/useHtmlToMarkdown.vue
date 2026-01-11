@@ -8,11 +8,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useHtmlToMarkdown } from '../useHtmlToMarkdown'
+import { ref } from "vue";
+import { useHtmlToMarkdown } from "../useHtmlToMarkdown";
 
-const htmlSource = ref('<h1>Hello</h1><p>This is <strong>HTML</strong>.</p>')
-const { markdown } = useHtmlToMarkdown(htmlSource)
+const htmlSource = ref("<h1>Hello</h1><p>This is <strong>HTML</strong>.</p>");
+const { markdown } = useHtmlToMarkdown(htmlSource);
 </script>
 
 <style scoped>

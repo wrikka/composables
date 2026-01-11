@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useParallax } from './useParallax'
+import { computed } from "vue";
+import { useParallax } from "./useParallax";
 
-const { roll, tilt } = useParallax()
+const { roll, tilt } = useParallax();
 
-const cardStyle = computed(() => ({
-  transform: `rotateX(${tilt.value * 20}deg) rotateY(${roll.value * 20}deg)`,
-  transition: 'transform 0.1s ease-out',
-}))
+const _cardStyle = computed(() => ({
+	transform: `rotateX(${tilt.value * 20}deg) rotateY(${roll.value * 20}deg)`,
+	transition: "transform 0.1s ease-out",
+}));
 
-const layer0Style = computed(() => ({
-  transform: `translateX(${roll.value * 10}px) translateY(${tilt.value * 10}px)`,
-}))
+const _layer0Style = computed(() => ({
+	transform: `translateX(${roll.value * 10}px) translateY(${tilt.value * 10}px)`,
+}));
 
-const layer1Style = computed(() => ({
-  transform: `translateX(${roll.value * 20}px) translateY(${tilt.value * 20}px)`,
-}))
+const _layer1Style = computed(() => ({
+	transform: `translateX(${roll.value * 20}px) translateY(${tilt.value * 20}px)`,
+}));
 
-const layer2Style = computed(() => ({
-  transform: `translateX(${roll.value * 30}px) translateY(${tilt.value * 30}px)`,
-}))
+const _layer2Style = computed(() => ({
+	transform: `translateX(${roll.value * 30}px) translateY(${tilt.value * 30}px)`,
+}));
 </script>
 
 <template>

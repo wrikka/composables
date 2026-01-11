@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useEventListener } from './useEventListener'
+import { ref } from "vue";
+import { useEventListener } from "./useEventListener";
 
-const el = ref<HTMLDivElement | null>(null)
-const message = ref('Click me')
+const el = ref<HTMLDivElement | null>(null);
+const message = ref("Click me");
 
-useEventListener(el, 'click', () => {
-  message.value = 'Clicked!'
-})
+useEventListener(el, "click", () => {
+	message.value = "Clicked!";
+});
 </script>
 
 <template>

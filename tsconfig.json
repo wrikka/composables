@@ -1,60 +1,44 @@
 {
-  "compilerOptions": {
-    // Modern target
-    "target": "esnext",
-    
-    // Module system
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": false,
-    "resolveJsonModule": true,
-    
-    // Output
-    "outDir": "./dist",
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    
-    // Build settings
-    "composite": true,
-    "incremental": true,
-    "isolatedModules": true,
-    "noEmit": false,
-    
-    // Type safety
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    
-    // Productivity
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "jsx": "preserve",
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "WebWorker"
-    ],
-    "types": [
-      "vitest/globals",
-      "node",
-      "w3c-generic-sensor"
-    ]
-  },
-  "include": [
-    "src/**/*",
-    "src/**/*.test.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "test"
-  ]
+	"compilerOptions": {
+		// Modern target
+		"target": "esnext",
+
+		// Module system
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": false,
+		"resolveJsonModule": true,
+
+		// Output
+		"outDir": "./dist",
+		"declaration": true,
+		"declarationMap": true,
+		"sourceMap": true,
+
+		// Build settings
+		"composite": true,
+		"incremental": true,
+		"isolatedModules": true,
+		"noEmit": false,
+
+		// Type safety
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
+		"noImplicitOverride": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noUncheckedIndexedAccess": true,
+		"exactOptionalPropertyTypes": true,
+
+		// Productivity
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"jsx": "preserve",
+		"lib": ["esnext", "dom", "dom.iterable", "WebWorker"],
+		"types": ["vitest/globals", "node", "w3c-generic-sensor"]
+	},
+	"include": ["src/**/*", "src/**/*.test.ts"],
+	"exclude": ["node_modules", "dist", "test"]
 }

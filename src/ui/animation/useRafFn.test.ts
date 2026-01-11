@@ -1,54 +1,54 @@
-import { describe, it, expect, vi, afterEach } from 'vitest'
-import { useRafFn } from './useRafFn'
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { useRafFn } from "./useRafFn";
 
-vi.useFakeTimers()
+vi.useFakeTimers();
 
-describe('useRafFn', () => {
-  const callback = vi.fn()
+describe("useRafFn", () => {
+	const callback = vi.fn();
 
-  afterEach(() => {
-    callback.mockClear()
-  })
+	afterEach(() => {
+		callback.mockClear();
+	});
 
-  it('should call callback on each frame', () => {
-    const { resume } = useRafFn(callback, { immediate: false })
+	it("should call callback on each frame", () => {
+		const { resume } = useRafFn(callback, { immediate: false });
 
-    resume()
-    vi.advanceTimersByTime(100)
+		resume();
+		vi.advanceTimersByTime(100);
 
-    expect(callback).toHaveBeenCalled()
-  })
+		expect(callback).toHaveBeenCalled();
+	});
 
-  it('should start immediately by default', () => {
-    useRafFn(callback)
-    vi.advanceTimersByTime(100)
-    expect(callback).toHaveBeenCalled()
-  })
+	it("should start immediately by default", () => {
+		useRafFn(callback);
+		vi.advanceTimersByTime(100);
+		expect(callback).toHaveBeenCalled();
+	});
 
-  it('should not start immediately if immediate is false', () => {
-    useRafFn(callback, { immediate: false })
-    vi.advanceTimersByTime(100)
-    expect(callback).not.toHaveBeenCalled()
-  })
+	it("should not start immediately if immediate is false", () => {
+		useRafFn(callback, { immediate: false });
+		vi.advanceTimersByTime(100);
+		expect(callback).not.toHaveBeenCalled();
+	});
 
-  it('should be pausable and resumable', () => {
-    const { isActive, pause, resume } = useRafFn(callback)
+	it("should be pausable and resumable", () => {
+		const { isActive, pause, resume } = useRafFn(callback);
 
-    expect(isActive.value).toBe(true)
+		expect(isActive.value).toBe(true);
 
-    vi.advanceTimersByTime(100)
-    expect(callback).toHaveBeenCalledTimes(1)
+		vi.advanceTimersByTime(100);
+		expect(callback).toHaveBeenCalledTimes(1);
 
-    pause()
-    expect(isActive.value).toBe(false)
+		pause();
+		expect(isActive.value).toBe(false);
 
-    vi.advanceTimersByTime(100)
-    expect(callback).toHaveBeenCalledTimes(1)
+		vi.advanceTimersByTime(100);
+		expect(callback).toHaveBeenCalledTimes(1);
 
-    resume()
-    expect(isActive.value).toBe(true)
+		resume();
+		expect(isActive.value).toBe(true);
 
-    vi.advanceTimersByTime(100)
-    expect(callback).toHaveBeenCalledTimes(2)
-  })
-})
+		vi.advanceTimersByTime(100);
+		expect(callback).toHaveBeenCalledTimes(2);
+	});
+});

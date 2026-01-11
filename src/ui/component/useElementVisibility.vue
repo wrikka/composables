@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useElementVisibility } from './useElementVisibility'
+import { ref } from "vue";
+import { useElementVisibility } from "./useElementVisibility";
 
-const el = ref<HTMLElement | null>(null)
-const isVisible = useElementVisibility(el)
+const el = ref<HTMLElement | null>(null);
+const _isVisible = useElementVisibility(el);
 </script>
 
 <template>

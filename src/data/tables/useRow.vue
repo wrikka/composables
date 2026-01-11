@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRow } from './useRow'
+import { ref } from "vue";
+import { useRow } from "./useRow";
 
 const data = ref([
-  { id: 1, name: 'Alice', details: 'Details for Alice' },
-  { id: 2, name: 'Bob', details: 'Details for Bob' },
-  { id: 3, name: 'Charlie', details: 'Details for Charlie' },
-])
+	{ id: 1, name: "Alice", details: "Details for Alice" },
+	{ id: 2, name: "Bob", details: "Details for Bob" },
+	{ id: 3, name: "Charlie", details: "Details for Charlie" },
+]);
 
 // This demonstrates how you might use useRow within a component that renders rows.
 // In a real application, you'd likely instantiate useRow for each row inside a v-for loop.
-const rows = data.value.map(item => useRow(item))
-
+const _rows = data.value.map((item) => useRow(item));
 </script>
 
 <template>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useFavicon } from './useFavicon'
+import { ref } from "vue";
+import { useFavicon } from "./useFavicon";
 
-const newFavicon = ref('https://vueuse.org/favicon.ico')
-const { favicon, setFavicon } = useFavicon()
+const newFavicon = ref("https://vueuse.org/favicon.ico");
+const { favicon, setFavicon } = useFavicon();
 
 // Set initial favicon
-setFavicon(newFavicon.value)
+setFavicon(newFavicon.value);
 </script>
 
 <template>

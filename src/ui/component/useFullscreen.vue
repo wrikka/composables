@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useFullscreen } from './useFullscreen'
+import { ref } from "vue";
+import { useFullscreen } from "./useFullscreen";
 
-const el = ref<HTMLElement | null>(null)
-const { isFullscreen, enter, exit, toggle } = useFullscreen(el)
+const el = ref<HTMLElement | null>(null);
+const { isFullscreen, enter, exit, toggle } = useFullscreen(el);
 </script>
 
 <template>

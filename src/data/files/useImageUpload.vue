@@ -12,24 +12,26 @@
 </template>
 
 <script setup>
-import { useImageUpload } from '../useImageUpload'
+import { useImageUpload } from "../useImageUpload";
 
 // This is a mock upload function for demonstration purposes.
 // In a real application, this would be an API call to your server.
 const mockUpload = async (file) => {
-  console.log(`Uploading ${file.name}...`)
-  // Simulate a delay
-  await new Promise(resolve => setTimeout(resolve, 1500))
-  // Simulate a successful upload by returning a blob URL
-  return URL.createObjectURL(file)
-}
+	console.log(`Uploading ${file.name}...`);
+	// Simulate a delay
+	await new Promise((resolve) => setTimeout(resolve, 1500));
+	// Simulate a successful upload by returning a blob URL
+	return URL.createObjectURL(file);
+};
 
-const { imageUrl, isLoading, error, upload } = useImageUpload({ uploadFunction: mockUpload })
+const { imageUrl, isLoading, error, upload } = useImageUpload({
+	uploadFunction: mockUpload,
+});
 
-const onFileChange = (event) => {
-  const file = event.target.files[0]
-  if (file) {
-    upload(file)
-  }
-}
+const _onFileChange = (event) => {
+	const file = event.target.files[0];
+	if (file) {
+		upload(file);
+	}
+};
 </script>

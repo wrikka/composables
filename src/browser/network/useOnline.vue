@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useOnline } from './useOnline';
+import { useOnline } from "./useOnline";
 
 const { isOnline } = useOnline();
 </script>

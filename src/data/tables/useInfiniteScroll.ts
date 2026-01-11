@@ -1,56 +1,56 @@
-import { ref, onMounted, onUnmounted } from 'vue'
-import type { Ref } from 'vue'
+import type { Ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 
 export interface UseInfiniteScrollOptions {
-  target: Ref<HTMLElement | null>
-  distance?: number
-  onLoad: () => Promise<void>
+	target: Ref<HTMLElement | null>;
+	distance?: number;
+	onLoad: () => Promise<void>;
 }
 
 export function useInfiniteScroll(options: UseInfiniteScrollOptions) {
-  const { target, distance = 100, onLoad } = options
+	const { target, distance = 100, onLoad } = options;
 
-  const isLoading = ref(false)
-  const hasMore = ref(true)
+	const isLoading = ref(false);
+	const hasMore = ref(true);
 
-  const loadMore = async () => {
-    if (isLoading.value || !hasMore.value) return
+	const loadMore = async () => {
+		if (isLoading.value || !hasMore.value) return;
 
-    isLoading.value = true
-    try {
-      await onLoad()
-    } finally {
-      isLoading.value = false
-    }
-  }
+		isLoading.value = true;
+		try {
+			await onLoad();
+		} finally {
+			isLoading.value = false;
+		}
+	};
 
-  const handleScroll = () => {
-    const el = target.value
-    if (!el) return
+	const handleScroll = () => {
+		const el = target.value;
+		if (!el) return;
 
-    const { scrollTop, scrollHeight, clientHeight } = el
-    if (scrollHeight - scrollTop <= clientHeight + distance) {
-      loadMore()
-    }
-  }
+		const { scrollTop, scrollHeight, clientHeight } = el;
+		if (scrollHeight - scrollTop <= clientHeight + distance) {
+			loadMore();
+		}
+	};
 
-  onMounted(() => {
-    const el = target.value
-    if (el) {
-      el.addEventListener('scroll', handleScroll)
-    }
-  })
+	onMounted(() => {
+		const el = target.value;
+		if (el) {
+			el.addEventListener("scroll", handleScroll);
+		}
+	});
 
-  onUnmounted(() => {
-    const el = target.value
-    if (el) {
-      el.removeEventListener('scroll', handleScroll)
-    }
-  })
+	onUnmounted(() => {
+		const el = target.value;
+		if (el) {
+			el.removeEventListener("scroll", handleScroll);
+		}
+	});
 
-  return {
-    isLoading,
-    hasMore,
-    loadMore,
-  }
+	return {
+		isLoading,
+		hasMore,
+		loadMore,
+	};
 }

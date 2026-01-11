@@ -1,39 +1,39 @@
-import { ref, computed } from 'vue'
+import { computed, ref } from "vue";
 
 export interface Column<T> {
-  key: keyof T | string
-  label: string
-  isVisible?: boolean
-  isResizable?: boolean
-  width?: string | number
+	key: keyof T | string;
+	label: string;
+	isVisible?: boolean;
+	isResizable?: boolean;
+	width?: string | number;
 }
 
 export function useColumn<T>(initialColumn: Column<T>) {
-  const column = ref(initialColumn)
+	const column = ref(initialColumn);
 
-  const isVisible = ref(initialColumn.isVisible !== false)
-  const width = ref(initialColumn.width)
+	const isVisible = ref(initialColumn.isVisible !== false);
+	const width = ref(initialColumn.width);
 
-  const headerClasses = computed(() => ({
-    'resizable': column.value.isResizable,
-  }))
+	const headerClasses = computed(() => ({
+		resizable: column.value.isResizable,
+	}));
 
-  function toggleVisibility() {
-    isVisible.value = !isVisible.value
-  }
+	function toggleVisibility() {
+		isVisible.value = !isVisible.value;
+	}
 
-  function setWidth(newWidth: string | number) {
-    if (column.value.isResizable) {
-      width.value = newWidth
-    }
-  }
+	function setWidth(newWidth: string | number) {
+		if (column.value.isResizable) {
+			width.value = newWidth;
+		}
+	}
 
-  return {
-    column,
-    isVisible,
-    width,
-    headerClasses,
-    toggleVisibility,
-    setWidth,
-  }
+	return {
+		column,
+		isVisible,
+		width,
+		headerClasses,
+		toggleVisibility,
+		setWidth,
+	};
 }

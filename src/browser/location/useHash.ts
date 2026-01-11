@@ -1,19 +1,19 @@
-import { ref, onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from "vue";
 
 export function useHash() {
-  const hash = ref(window.location.hash);
+	const hash = ref(window.location.hash);
 
-  const updateHash = () => {
-    hash.value = window.location.hash;
-  };
+	const updateHash = () => {
+		hash.value = window.location.hash;
+	};
 
-  onMounted(() => {
-    window.addEventListener('hashchange', updateHash);
-  });
+	onMounted(() => {
+		window.addEventListener("hashchange", updateHash);
+	});
 
-  onUnmounted(() => {
-    window.removeEventListener('hashchange', updateHash);
-  });
+	onUnmounted(() => {
+		window.removeEventListener("hashchange", updateHash);
+	});
 
-  return hash;
+	return hash;
 }
